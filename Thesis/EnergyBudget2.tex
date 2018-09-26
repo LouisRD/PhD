@@ -1,0 +1,288 @@
+\section{Energy budget of the ocean component of the CCSM}
+\label{vert}
+
+As demonstrated in chapter \ref{processes}, the ocean plays an important role in the sea ice mass balance. The sea surface temperature is the most important factor controlling the amount of energy transferred from the ocean to the sea ice. The CCSM sea surface temperature is defined as the temperature of the top layer of the ocean component. We want to quantify the different elements affecting the top layer of the ocean. 
+
+Reconstructing the temperature-energy equation - proving that the temperature is conserved - would confirm that all the energy sources are accounted for and provide an accurate analysis. We refer to this exercise as closing the temperature-energy budget. The CCSM3 is known to be energy conservative \citep{SG4} but it does not mean that the standard output allows the user to close the energy budget.
+
+This chapter can be read as a tutorial on how to close the energy budget of a global climate model and how to obtain the code definition of variables in the model. The tutorial sections can be skipped to obtain only the results of the energy budget. Closing the energy budget of a climate model proved to be a tedious and challenging task. This chapter could be helpful to any researcher attempting similar calculations. Similar projects occurred and my work on the energy budget of the CCSM has already been helpful to A. Nummelin and M. Gervais. 
+
+The derivation of the theoretical energy equation is presented in section \ref{energeq}. How to access a list of the output variables for the CCSM3 is explained in section \ref{c3} along with the temperature budget of the ocean component of the CCSM3. Results of the temperature budget of the CCSM4 can be found in section \ref{c4}. The coding of the temperature equation in the CCSM4 is presented in section \ref{code}. Concluding remarks are in section \ref{concEB}.
+
+\subsection{Energy equation}\label{energeq}
+
+The CCSM is based on the Navier-Stokes equations and the energy equation for fluids. We could directly jump to the temperature or internal energy equation, however, it would be relevant to review the theoretical derivation of the energy equation. The energy density ($J/m^3$) of a fluid can be split into three parts: kinetic, potential and internal. The kinetic energy density, $K$, is given by:
+\begin{equation}
+K = \frac{u^2}{2},
+\end{equation}
+where $u^2 = \vec{u} \cdot \vec{u}$ is the norm of the velocity vector $(u,v,w)$ squared. The potential energy density, $U$, is given by:
+\begin{equation}
+U = g \, z,
+\end{equation}
+where $g$ is the gravitational constant and $z$ is the height. In the case of an ideal gas, the internal energy is proportional to the temperature; $I = c_{p,v} T$ where $c_{p,v}$ is the heat capacity with constant pressure with the subscript $p$ and with constant volume with subscript $v$. Taking the thermodynamic definition of the internal energy applied for an incompressible fluid ($\rho = \rho_0$, $dV=0$ if the temperature is constant), we obtain 
+\begin{equation}
+dI = c_v \cdot T + \left[ T \frac{\partial P}{\partial T} -P \right]dV = c_v \cdot T \Rightarrow I = c_v \cdot T.
+\end{equation}
+The internal energy is proportional to the temperature,
+\begin{equation}\label{int}
+I = c_p \, T.
+\end{equation}
+The total energy, $E$, of a volume $V$, is:
+\begin{equation}\label{eqE}
+E = \int_V \rho \, (K+U+I)\, dV.
+\end{equation}
+where $\rho$ is the density. The temporal change of the total energy must be equal to the energy flux integrated over the surface, $S$, of the volume:
+\begin{equation}\label{heq}
+\frac{\partial E}{\partial t} = -\oint_S \rho \,   (K+U+I) \, \vec{u} \cdot \hat{n} \, dS,
+\end{equation}
+where $\hat{n}$ is a unit vector perpendicular to the surface and pointing outward.
+
+Other sources of energy includes: pressure work, diffusion and surface interactions. The pressure work done on the system per surface area is given by the pressure, $P$, times the displacement, $\vec{x}$,
+\begin{equation}
+W = P\,\hat{n}\cdot \vec{x}.
+\end{equation}
+Over a small time increment, the pressure can be considered constant leading to:
+\begin{equation}
+\frac{\delta W}{\delta t} = \frac{ \delta(P\,\hat{n}\cdot \vec{x})}{\delta t} = P\,\hat{n} \cdot \frac{\delta \vec{x}}{\delta t} = P\,\hat{n} \cdot \vec{u}.
+\end{equation}
+The total pressure work done per unit of time over the volume $V$ with surface $S$ is given by:
+\begin{equation}\label{work}
+\frac{\Delta W}{\Delta t} = \oint_S P \,  \hat{n} \cdot \hat{u} \, dS.
+\end{equation}
+
+The diffusion, $\vec{q}$, can be written using Fourier's law for heat fluxes,
+\begin{equation}
+\vec{q} = - \chi \nabla T,
+\end{equation}
+where $\chi$ is the thermal conductivity in $W/(m \, K)$. The total diffusive heat flux over a volume is given by:
+\begin{equation}\label{diff}
+\oint_S \vec{q}\cdot \hat{n}\, dS.
+\end{equation}
+
+The last piece of the energy budget is the surface interactions: radiation, latent and turbulent heat fluxes. We define the surface interaction term, $\vec{F}$, as zero inside the volume $V$ and equal to F at the top surface of the volume. The total energy income from surface interactions can then be written as:
+\begin{equation}\label{surf}
+\oint_S \vec{F} \cdot \hat{n} \,dS.
+\end{equation}
+Note that some of the fluxes will be transmitted through the fluid (e.g. solar flux) and will contribute to F even if the surface of the volume V is not at the surface of the ocean.
+
+Using the equations \ref{eqE}, \ref{heq}, \ref{work}, \ref{diff} and \ref{surf}, the energy equation can be written as:
+\begin{equation}
+\int_V \frac{\partial}{\partial t} \left[ \rho \, (K+U+I) \right]  dV = \oint_S \left[{-\rho \, \vec{u} (K+U+I+\frac{P}{\rho}) - \vec{q} + \vec{F} } \right] \cdot \hat{n}\, dS.
+\end{equation}
+Using the divergence theorem on the right hand side of the equation, we obtain
+\begin{equation}
+\int_V \frac{\partial}{\partial t} \left[ \rho \, (K+U+I) \right]  dV = \int_V \nabla \cdot \left[{-\rho \, \vec{u} (K+U+I+\frac{P}{\rho}) - \vec{q} + \vec{F}  } \right] dV.
+\end{equation}
+The last equation is valid for any volume implying that the integrands must be equal, leading to:
+\begin{equation}\label{ener}
+\frac{\partial}{\partial t} \left[ \rho \, (K+U+I) \right] = \nabla \cdot \left[{\rho \, \vec{u} (K+U+I+\frac{P}{\rho}) - \vec{q} + \vec{F}  } \right].
+\end{equation}
+Equation \ref{ener} is the energy equation for a three-dimensional fluid.
+
+Most models do not solve that equation directly. Usually, their advection scheme balances kinetic energy plus potential energy and pressure,
+\begin{equation}\label{ener}
+\frac{\partial}{\partial t} \left[ \rho \, (K+U) \right] = \nabla \cdot \left[{\rho \, \vec{u} (K+U+\frac{P}{\rho})} \right].
+\end{equation}
+Under those conditions, the energy equation becomes the internal energy equation:
+\begin{equation}\label{internal}
+\frac{\partial}{\partial t} \left[ \rho \, I \right] = \nabla \cdot \left[{\rho \, \vec{u} I - \vec{q} + \vec{F}} \right],
+\end{equation}
+which can be rewritten in terms of the temperature,
+\begin{equation}\label{Tequ}
+\frac{\partial}{\partial t} \left[ \rho \, c_{p} T \right] = \nabla \cdot \left[{\rho \, \vec{u} c_{p} T - \vec{q} + \vec{F}} \right].
+\end{equation}
+The ocean part of the CCSM, the POP model, solves this equation. 
+
+\subsection{Energy budget for the CCSM3}\label{c3}
+
+In order to complete the energy budget for the CCSM3, we must retrieve every term of equation \ref{Tequ} as a variable output from the simulations. The standard output of the CCSM3 can be found in the monthly history files. Those files include all the output fields averaged monthly. It is possible to access one of the history file through the Earth System Grid web site\footnote{https://www.earthsystemgrid.org/home.html}. If the reader owns a NCAR YubiKey, typing `hsi' in a terminal connects the user to NCAR High Performance Storage System (HPSS) where all the outputs are stored. The ocean history files are located at /CCSM/csm/"RunName"/ocn/hist/. Using the command `get', the user can transfer the file to his or her own account and then work with the data. The list of the variables included in a file can be shown by using NETCDF\footnote{For more information on NETCDF visit \textit{https://www.unidata.ucar.edu/software/netcdf/docs/faq.html\#whatisit}, last visited May 9, 2018.} command \nobreak{`ncdump -h "FileName" | less'}. The option `-h' only shows the variables' description and not the data. The option `| less' will show enough information to fit the terminal size. It is then possible to go through the list pressing \textit{Enter}. The heat transfer related variables include: surface fluxes, frazil ice formation, vertically integrated horizontal divergence of heat diffusion, advective heat fluxes in all three spatial directions, vertically integrated temperature advection tendency, potential temperature and some constants, see table \ref{var3}.
+\begin{table}
+\centering
+\begin{tabular}{l | l | c}
+\hline
+ Name  & Definition & Unit \\
+\hline
+  SHF  & 	Surface fluxes absorbed by the ocean. 	& $W/m^2$  \\
+  QFLUX  &    Frazil ice formation.				& $W/m^2$  \\
+  HDIFT  &    Vertically integrated horizontal divergence of heat diffusion.	& $cm \, ^\circ C/s$\\
+  UET & 	Advective flux of Heat in grid-x direction	&	$^\circ C/s$	\\
+  VNT& 	Advective flux of Heat in grid-y direction	&	$^\circ C/s$	\\
+  WTT & 	Advective flux of Heat in grid-z direction	&	$^\circ C/s$	\\
+  ADVT & 	Vertically integrated temperature advection tendency & $cm \, ^\circ C/s$ \\
+  TEMP   & Potential temperature &   $^\circ C$ \\ 
+  TAREA & Area of T cells & $cm^2$ \\
+  dz & Thickness of layer k & $cm$ \\
+  cp\_sw & Specific heat of sea water & $erg/g/K$\\
+  rho\_sw & Density of sea water & $g/cm^3$
+\end{tabular}
+\caption{CCSM3 output variables required for the energy budget.} \label{var3}
+\end{table}
+
+The surface fluxes include evaporation, sensible heat, emitted and absorbed longwave, melt, snow, ice runoff and absorbed short wave. The units of the fluxes are different. The surface fluxes and the frazil ice formation are in units of $W/m^2$. The advective heat fluxes are in $^\circ C/s$. The vertically integrated divergence of heat units is  $cm \, ^\circ C/s$. We must convert the heat fluxes to a unique unit. We chose the watt (J/s). The surface fluxes and the frazil ice formation must be multiplied by the surface area in unit of meters instead of centimeters. The advective and diffusive fluxes must be multiplied by the surface area, the sea water density and the specific heat of sea water in unit of $J/g/K$ instead of $erg/g/K$. 
+
+From table \ref{var3}, the only missing process is the heat diffusion in the three spatial directions. We have the vertically integrated horizontal divergence of heat diffusion though. The vertical divergence of heat diffusion is not required because it sums up to zero. When vertically integrated, the only remaining terms are the surface  and the ocean floor diffusion. There cannot oceanic heat diffusion from the atmosphere of the ocean floor. Hence, both are defined as zero. Only the vertically integrated heat budget can be done without neglecting the heat diffusion. If this budget is accurate, the heat diffusion of each cell can be calculated as the residual of the energy budget of that cell.
+
+\begin{figure}[b!]
+\center
+\includegraphics[trim={5cm 2cm 5cm 1cm}, width=0.75\textwidth]{EnergyBudget/Global3.jpg}
+\caption{ Top) Global forcings for the year 1950. Bottom) Temperature temporal derivative for the year 1950 from three schemes (solid) and their associated budget error (dashed): Euler (blue), backward Euler (green) and Leap-Frog (red).}
+\label{G3}
+\end{figure}
+
+All the heat fluxes of the vertically integrated budget are accounted for; the right hand side of equation \ref{Tequ}. We still have to retrieve the internal energy temporal derivative; the left hand side of equation \ref{Tequ}. The column internal energy is calculated as the monthly mean temperature times the cell volume, integrated vertically and then multiplied by the sea water heat capacity and the sea water density\footnote{Using the output of the CCSM, the column internal energy is calculated as, 
+\begin{equation}
+cp\_sw \cdot 10^{-7} \cdot rho\_sw \cdot TAREA\cdot \sum_{k} \left[TEMP_k \cdot dz_k\right].
+\end{equation}
+We must multiply the heat capacity of sea water by $10^{-7}$ to change its unit from ergs to joules.},
+\begin{equation}
+I = c_p\cdot \rho \cdot \int_{column} T dV.
+\end{equation}
+The temporal derivative of the internal energy can be calculated using the Euler scheme, 
+\begin{equation}
+\frac{dI}{dt} = \frac{I_{t+1}-I_{t}}{\delta t},
+\end{equation}
+the backward Euler scheme,
+\begin{equation}
+\frac{dI}{dt} = \frac{I_{t}-I_{t-1}}{\delta t},
+\end{equation}
+ or the leapfrog scheme, 
+ \begin{equation}
+\frac{dI}{dt} = \frac{I_{t+1}-I_{t-1}}{2 \delta t}.
+\end{equation}
+The results of each scheme are presented.  
+
+\begin{figure}[t!]
+\center
+\includegraphics[trim={5cm 2cm 5cm 3cm}, width=0.75\textwidth]{EnergyBudget/Arctic3.jpg}
+\caption{ Top) Arctic forcings for the year 1950. Bottom) Temperature temporal derivative for the year 1950 from three schemes and its associated budget error (dashed): Euler (blue), backward Euler (green) and Leap-Frog (red). }
+\label{A3}
+\end{figure}
+
+Every term of the vertical integration of equation \ref{Tequ} can be calculated. The column heat budget is ready to be computed. We chose to study the simulation b30.030b.ES01 because it is the main simulation studied by \cite{ISI:000242942100008}. It is characterized by the longest and the most apparent rapid September sea ice extent decline. First, we start our analysis of the budget for the oceans altogether. Second, we study the Arctic Ocean budget and third we analyze the column budget. All calculations are for the months of the year 1950.
+
+On a global scale, there is no input of energy from advection or diffusion. All the oceans are boarded by coast. No ocean advection or diffusion can come from it. Only the surface fluxes are bringing energy into the ocean peaking at $11 \, W/m^2$ in February and $-21 \, W/m^2$ in July, see the top panel of figure \ref{G3}). Note that the surface fluxes are cooling the ocean over the full course of year 1950. The budget error - or the difference between the heat fluxes and the temporal derivative of the internal energy  -  when using the Euler schemes ranges from $-7\, W/m^2$ and $6\, W/m^2$. The calculations made with the leapfrog scheme offer the smallest error, as expected, ranging from $-2\,W/m^2$ and $2\,W/m^2$. We expect the vertical diffusive heat fluxes in the ocean to be less than $1\,W/m^2$. It would be impossible to discern between actual vertical diffusive heat fluxes and the budget error. 
+
+Over the Arctic Ocean, the surface fluxes are positive, warming the ocean, for four months peaking in June and July at $19 \, W/m^2$, see the top panel of figure \ref{A3}). During the winter months, the surface fluxes are cooling the ocean at a minimum of $-31 \, W/m^2$ in October. The frazil ice formation releases up to $5 \, W/m^2$ during winter and nothing during summer. The advection of heat inside the Arctic Ocean ranges between $3$ and $10 \, W/m^2$ during fall. The diffusion has smaller values than $1 \, W/m^2$. The calculations using the the Leapfrog scheme are giving better results over the Euler schemes with a budget error of $\pm 3 \, W/m^2$ and $\pm 12 \, W/m^2$ respectively. Alike the global ocean, the budget error is higher than the expected vertical heat fluxes. 
+
+\begin{figure}[t!]
+\center
+\includegraphics[trim={5cm 2cm 5cm 1cm},width=0.75\textwidth]{EnergyBudget/Error3M.jpg}
+\caption{Column budget error using the leapfrog scheme for the temporal derivative for every month of year 1950.}
+\label{C3}
+\end{figure}
+
+Since the leapfrog scheme gave better results globally and over the Arctic Ocean, we decided to look at the column energy budget using that scheme. The averaged column error is of $\pm 150 \, W/m^2$ as can be seen in figure \ref{C3}. Though, the column error surpasses $1000 \, W/m^2$ for certain columns . Some regions switch from a highly negative error to a highly positive error from a month to the next. North of Australia and New Zealand, there is an area with an error over $150\,W/m^2$ dropping under $-150\,W/m^2$ in February. Then, a combinations of columns with an error of $150\,W/m^2$ and $-150\,W/m^2$ can be found in the same location for the months of March and April. The error becomes over $150\,W/m^2$  again in May and then under $-150\,W/m^2$ in June, etc. The column error decreases significantly when averaged yearly. 
+
+The calculated error of the temperature budget is not satisfying using the output of the CCSM3. We believe the error comes from the temporal derivative. Even if the leapfrog scheme improves the results, it is still an approximation. The exact temporal derivative is given by the difference of two instantaneous temperature snapshots. For monthly mean fluxes, the temperature field at 0:00 the first day of the month and the temperature field at 0:00 the first day of the next month are required. But it is not possible with the CCSM3 output. Indeed, it is possible to retrieve restart files for the CCSM3 containing temperature snapshot every 10 years of January $1^{st}$ at 0:00. This temporal resolution is of no use for us since we want to follow rapid sea ice declines spanning over a period of less than 10 years. For that reason, we decided to turn to the CCSM version 4. This version stored restart files yearly providing temperature snapshot every first of January at 0:00.  
+
+\subsection{CCSM4}\label{c4}
+
+The CCSM4 uses the same variables as the CCSM3 with the same names plus numerous more, see table \ref{var4}. 
+\begin{table}
+\centering
+\begin{tabular}{l | l | c}
+\hline
+ Name  & Definition & Unit \\
+\hline
+  SHF  & 	Surface fluxes absorbed by the ocean. 	& $W/m^2$  \\
+  QFLUX  &    Frazil ice formation.				& $W/m^2$  \\
+  HDIFT  &    Vertically integrated horizontal divergence of heat diffusion.	& $cm \, ^\circ C/s$\\
+  UET & 	Advective flux of Heat in grid-x direction	&	$^\circ C/s$	\\
+  VNT& 	Advective flux of Heat in grid-y direction	&	$^\circ C/s$	\\
+  WTT & 	Advective flux of Heat in grid-z direction	&	$^\circ C/s$	\\
+  ADVT & 	Vertically integrated temperature advection tendency & $cm \, ^\circ C/s$ \\
+  TEMP   & Potential temperature &   $^\circ C$ \\ 
+  TAREA & Area of T cells & $cm^2$ \\
+  dz & Thickness of layer k & $cm$ \\
+  cp\_sw & Specific heat of sea water & $erg/g/K$\\
+  rho\_sw & Density of sea water & $g/cm^3$\\
+     HDIFE\_TEMP & 	Advective flux of Heat in grid-x direction	&	$^\circ C/s$	\\
+  HDIFN\_TEMP & 	Advective flux of Heat in grid-y direction	&	$^\circ C/s$	\\
+  HDIFB\_TEMP & 	Advective flux of Heat in grid-z direction	&	$^\circ C/s$	\\
+  KPP\_SRC\_TEMP & 	KPP non local mixing term	&	$W/m^2$
+\end{tabular}
+\caption{CCSM4 output variables required for the energy budget.} \label{var4}
+\end{table}
+
+It outputs yearly temperature snapshots the $1^{st}$ of January at 0:00. It is now possible to compute an exact temporal derivative of the temperature or internal energy. Since we will be working with yearly variations, it is required to convert all monthly averaged fluxes, $\overline{F_m}$, into yearly average, $\overline{F_y}$. Note that there are no leap years in the CCSM. All the analyses shown in this chapter are based on the simulation $b40.20th.track1.1deg.012$. We chose this simulation because it contains more output than usual runs being part of the Mother Of All Runs (MOAR). The studied period spans between 1950 to 1959.
+
+%, by multiplying by the adequate number of days into each month and then divide by the number of days in a year,
+%\begin{equation}
+%\overline{F_y} = \sum_{n=1}^{12} \overline{F_m} \cdot \frac{D_n}{365},
+%\end{equation}
+%where $D_n$ is the number of days in month $m$. 
+
+\begin{figure}[t!]
+\center
+\includegraphics[trim={8cm 2cm 8cm 5cm},width=0.75\textwidth]{EnergyBudget/Error4GALike3.jpg}
+\caption{Top) Yearly global internal energy budget of the CCSM4. Bottom) Yearly Arctic Ocean internal energy budget of the CCSM4. Following the legend, dT stands for the yearly internal energy variation, adv for advection, diff for diffusion, surf for surface, q for frazil ice formation and budget represented the internal energy variation minus the fluxes.  }
+\label{err4l3}
+\end{figure}
+
+The yearly global budget closes up to $\pm 0.4 \, W/m^2$. One can see in see figure \ref{err4l3} that the advection and diffusion sum up to zero. The yearly surface flux varies between $-1 \, W/m^2$ and $0.85 \, W/m^2$. The internal energy temporal derivative varies from $-1.2 \, W/m^2$ up to $1.4 \, W/m^2$. The frazil ice formation is fairly constant over the years at $0.18 \pm 0.01 \, W/^2$. These values are consistent with the yearly mean obtained from the CCSM3. 
+
+The yearly Arctic budget closes up to $\pm 0.4 \, W/m^2$, see figure \ref{err4l3}. The fluxes are almost constant through the ten-year period 1950-59. The surface flux is the most important energy sink at $-5 \, W/m^2$. The advective flux is the highest energy income at $2.7 \, W/m^2$ followed by the frazil ice production at $1.8 \, W/m^2$ and then the diffusion of heat at $0.9 \, W/m^2$. The internal energy temporal derivative ranges from $-0.8 \, W/m^2$ to $1.4 \, W/m^2$. 
+
+\begin{figure}[t!]
+\center
+\includegraphics[trim={9cm 2cm 9cm 5cm},width=0.75\textwidth]{EnergyBudget/Error4Like3.jpg}
+\caption{Error of the vertically integrated internal energy budget in $W/m^2$ for the years 1951 to 1958 and in the bottom right corner, the average error over 1950-59.}
+\label{column4l3}
+\end{figure}
+
+Even if the error of the budget closes satisfactorily globally and over the Arctic Ocean, it is not the case over the ocean columns, see figure \ref{column4l3}. The column error can reach up to $\pm 150\, W/m^2$ and broad regions are at $\pm 50 \, W/m^2$. It also changes from very positive to very negative between each year. For example, north of Australia and New Zealand, the error is $50 \, W/m^2$ in 1953 then switches to $-50 \, W/m^2$ in 1954 and back to $50 \, W/m^2$ in 1955. It is an improvement compared to the CCSM3. The average error when from $\pm 150\, W/m^2$ for the CCSM3 down to $\pm 50\, W/m^2$ for the CCSM4. The maximum error when from $1000\,W/m^2$ for the CCSM3 down to $150\, W/m^2$ for the CCSM4. 
+
+Once averaged over the decade, the column error shrinks down to $\pm 10 \, W/m^2$ with the majority of the domain being at $\pm 1 W/m^2$. Since the model solves the temperature equation, it should be possible to close it up to machine accuracy using the right variables. The missing process or processes have the following properties: (1) they range between $\pm 150\, W/m^2$, (2) they cancel when integrated globally, (3) they cancels when integrated over the Arctic Ocean, (4) their value decreases significantly when averaged over a decade.  After inspecting carefully the complete list of output variables, we conclude that the missing field is not included in the standard output of the MOAR. In the next section, we delve into the CCSM4 code to investigate which physical process is missing. 
+
+
+\subsection{CCSM coded temperature equation}\label{code}
+
+Tracking the definition of a variable in a gigantic code such as the CCSM is laborious. There are no direct ways to follow a variable through the code up to its equation. The variables are constantly changing names and are sometimes calculated as temporary variables in a specific routine. The approach I followed consisted of taking one variable at a time and following its lead as far as possible. First, I found all the occurrences of the variable name using the terminal command 'grep VarName *.F90'. Second, I scrutinize all the entries in the terminal directly in the Fortran90 code file. Third, if the name of the variable changes, I restart at step one with the new name.  At some point, the code and the variables start revealing themselves making searches easier and faster. How to obtain the CCSM versions 3 and 4 code is explained in appendix \ref{cver}. Every code part required to understand the different variables of the internal energy budget of the CCSM can be found in appendix \ref{cver}.  
+
+The temperature equation of the CCSM4 adds the results of six subroutines: (1) horizontal diffusion, (2) advection, (3) vertical diffusion, (4) reset temperature, (5) KPP parameterization, (6) short wave radiation absorption. The horizontal diffusion is the first element of the temperature budget being called. There are three diffusion schemes: laplacian, biharmonic and Gent-McWilliams. The simulation $b40.20th.track1.1deg.012$ used the Gent-McWilliams scheme. The Gent-McWilliams scheme is described in \cite{Gent:1990zr}. The CCSM calculates the horizontal diffusion of heat through a side of a cell as the product of the side area of the cell ($A_{side}$), the spatial derivative of the temperature perpendicular to the side area ($\frac{dT}{dx_\perp}$) and a diffusive coefficient ($\kappa$),
+\begin{equation}\label{hdeq}
+D = A_{side}\cdot \frac{dT}{dx_\perp} \cdot \kappa.
+\end{equation}
+The diffusive coefficient includes conventional and Gent-McWilliams diffusive coefficients. The MOARs have more output which includes eastward and northward heat diffusion.  Usually, only the vertically integrated divergence of heat diffusion is output, $\int (D_{west}-D_{east} + D_{south} - D_{north}) dz$.
+%\begin{equation}\label{hdeq}
+%\int (D_{west}-D_{east} + D_{south} - D_{north}) dz.
+%\end{equation}
+
+The second element of the temperature budget is the heat advection. It is output as the eastward, northward and bottom heat fluxes and also as the vertically integrated divergence of heat advection. The heat advection on a side of a cell is given by $Adv = A_{side}\cdot T_{side} \cdot u_{side}$.
+%\begin{equation}\label{hdeq}
+%Adv = A_{side}\cdot T_{side} \cdot u_{side}.
+%\end{equation}
+
+The third element of the temperature equation is the vertical diffusion. It is calculated as the difference between the top and the bottom vertical diffusion, $T_{bottom}\cdot\kappa_{bottom} - T_{top}\cdot\kappa_{top}$. For the surface layer, several surface interactions are added: evaporation, sensible heat, emitted and absorbed longwave, melt, snow and ice runoff. They are output separately or as a bundle with the shortwave radiation. The vertical diffusion is not part of the standard or MOAR output. 
+%\begin{equation}\label{hdeq}
+%T_{bottom}\cdot\kappa_{bottom} - T_{top}\cdot\kappa_{top}.
+%\end{equation}
+
+
+The fourth element is the reset temperature process. When the ocean temperature goes under the freezing point, the model resets the ocean temperature back at the freezing point. The involved energy is used to form frazil ice. There is a variable for frazil ice formation in the standard output. However, nothing in the code seemingly ties this variable to what is calculated in the temperature equation. We will use the standard output frazil formation variable to cover this part of the temperature equation. 
+
+The fifth element of the temperature equation treats of vertical KPP mixing parameterization. \cite{ROG:ROG1432} developed it. It is given by the product of all the surface forcings times a nonlocal diffusivity coefficient, $F_{surf} \cdot \kappa_{kpp}$. This nonlocal term is bewildering and is still misunderstood in the community though well accepted. It is based on boundary layers physics for the atmosphere, which is well developed, and adapted for the ocean. The divergence of KPP mixing is part of the standard output of the CCSM4 as KPP\_SRC\_TEMP. This variable was not present in our previous analysis whereas its vertical integration is nul. There is no mixing at the surface of the ocean or at the ocean floor. 
+%\begin{equation}
+%F_{surf} \cdot \kappa_{kpp}.
+%\end{equation}
+
+The sixth, and last, element of the temperature budget is the short wave absorption. It is part of the standard output and in a bundle including all surface fluxes excluding frazil ice formation. 
+
+All the parts of the temperature equation have been reviewed. There are outputs to calculate the results for five of the six elements of the temperature equation. Only the vertical diffusion is missing. A vertically integrated budget brings that term to zero. The only new process that was missing is the non-local KPP mixing parameterization. It does not alter the previous results since it is null when vertically integrated. In the end, all this code verification does not improve the internal energy budget done in the previous sections of this chapter.
+
+\subsection{Conclusion}\label{concEB}
+
+Our goal was to study all the energy sources affecting the first layer of the Arctic Ocean. The CCSM3 is lacking the vertical diffusive heat fluxes and the snapshot temperature for an exact temperature temporal derivative. It is tempting to calculate the vertical heat diffusion as a residual of all the other fluxes. While it is possible to calculate the heat advection through a truncated column using  eastward and northward advective heat fluxes, it is not possible for the diffusion since the variables are not output. All the horizontal and vertical diffusion would end up in the residual. The estimated error on that result would be the budget error, $3\,W/m^2$. Since the vertical heat fluxes are generally low, under $1\,W/m^2$ in the Arctic Ocean, we find this error too important. 
+
+The MOAR of the CCSM4 offers more options since the eastward and northward diffusive heat fluxes are output with the KPP vertical mixing. Yearly temperature snapshots allow for an exact calculation of the temporal derivative. Again, the vertical heat diffusion is not output. It is now possible to compute the mean vertical diffusion globally or over the Arctic Ocean with an estimated error of $0.4\,W/m^2$. Even if this error is acceptable in terms of vertical diffusion, we have not been able to close the internal energy budget for the columns. Its error reaches over $150\,W/m^2$ for both the CCSM versions 3 and 4. This uncertainty does not raise enough confidence to trust the estimated error of $0.4\,W/m^2$ without a reasonable explanation. We do not hold any convincing explanation for the extremely high column budget error. We regretfully stop our analysis of the first layer of the CCSM ocean model for that reason. 
+
+The oceanic temperature has a considerable effect on the sea ice and the Arctic as shown in chapter \ref{processes}. It is mandatory to understand the sources of heat affecting it if we want to understand the future of the Arctic. To do so, a reconstruction of the temperature/heat equation is required. This chapter showed the limit of the CCSM output to reconstruct the temperature/heat equation.
+
+Even if it is not possible to study in detail each source of heat reaching the surface layer of the Arctic Ocean, it is possible to study the evolution of some sources. The next chapter is dedicated to the advective heat transport through the gateways of the Arctic Ocean. 
+
+
+
+
+% Could the problem be the missing geothermal flux bottom_heat_flx in vertical_mix.F90?
+
+

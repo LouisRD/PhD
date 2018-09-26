@@ -1,0 +1,321 @@
+\begin{appendices}
+%\section{Unit transformation}\label{unit}
+%
+%
+%Since QFLUX and SHF are in $W/m^2$ and HDIFT and ADVT are in $cm \, ^\circ C/s$, we must convert to a unique unit. We chose the watt, joule per seconds. SHF and QFLUX must be multiplied by TAREA in $m^2$ instead of $cm^2$:
+%\begin{equation}
+%[ SHF \cdot TAREA \cdot 10^{-4}] = \frac{W}{m^2} \cdot cm^2 \cdot \frac{m^2}{(100 cm)^2} = W.
+%\end{equation}
+%HDIFT and ADVT units are $cm \, ^\circ C/s$ and must be transformed to $W$. They have to be multiplied by TAREA, cp\_sw in joule instead of erg and rho\_sw:
+%\begin{equation}
+%[HDIFT \cdot TAREA \cdot rho\_sw \cdot cp\_sw \cdot 10^{-7}] = \frac{cm \, ^\circ C}{s} \cdot cm^2 \cdot \frac{g}{cm^3} \cdot \frac{erg}{g K} \cdot \frac{ J}{10^{-7} erg} = \frac{J}{s} = W.
+%\end{equation}
+
+%\section{Vertically integrated internal energy equation}\label{inte}
+%
+%The vertically integrated internal energy equation is given by:
+%\begin{equation}
+%cp\_sw \cdot 10^{-7} \cdot rho\_sw \cdot TAREA\cdot \sum_{k} \left[TEMP_k \cdot dz_k\right].
+%\end{equation}
+%We must multiply the heat capacity of sea water by $10^{-7}$ to change its unit from ergs to joules.
+
+\section{CCSM4 code verification}\label{cver}
+
+The CCSM4 code can be obtained following the instructions on the UCAR web site\footnote{\textit{http://www.cesm.ucar.edu/models/ccsm4.0/ccsm\_doc/x367.html}, last visited May 9, 2018}. For those who could still be interested in the CCSM3, it can be obtained on the Earth System Grid web page: https://www.earthsystemgrid.org/. A search for ?CCSM3 code? should quickly bring the user to the download options for the code.
+
+Only the west-east components are explicitly presented. The south-north component is calculated identically but over a different index. 
+
+\subsection{Temperature equation}\label{aTE}
+
+The temperature equation is coded in the subroutine \textit{tracer\_update} called at line 551 of \textit{baroclinic.F90} and defined at line 1600: 
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+1680 \hspace{1em} FT    = c0\\
+1691  \hspace{1em} call hdifft(k, WORKN, TMIX, UMIX, VMIX, this\_block)\\
+1694 \hspace{1em}  FT = FT + WORKN\\
+ 1761 \hspace{1em} call advt(k,WORKN,WTK,TMIX,TCUR,UCUR,VCUR,this\_block)\\
+ 1763 \hspace{1em} FT = FT - WORKN   ! advt returns WORKN = +L(T) \\
+1788 \hspace{1em}  call vdifft(k, WORKN, TOLD, STF\_IN, this\_block)\\
+1790 \hspace{1em}  FT = FT + WORKN\\
+ 1835\hspace{1em}  call set\_pt\_interior(k,this\_block,WORKN(:,:,1))\\
+1853 \hspace{1em}  call add\_kpp\_sources(WORKN, k, this\_block)\\
+ 1856 \hspace{1em} call add\_sw\_absorb(WORKN, SHF\_QSW(:,:,bid), k, this\_block)\\
+1859 \hspace{1em}  FT = FT + WORKN\\
+1971 \hspace{1em} TNEW(:,:,k,n) = TOLD(:,:,k,n) + c2dtt(k)*FT(:,:,n)
+\end{quotation}
+
+The six involved subroutines are: (1) \textit{hdifft} for the horizontal diffusion, (2) \textit{advt} for the advection, (3) \textit{vidfft} for the vertical diffusion, (4) \textit{set\_pt\_interior} , \textit{add\_kpp\_sources} and \textit{add\_sw\_absorb}. Each routine computes its heat input in WORKN which is added to FT the temperature flux. We need to follow how WORKN is calculated in each routine. For each instance of WORKN, we want to know if it is output by the CCSM4.
+
+
+\subsection{Horizontal diffusion}\label{aTE}
+
+The horizontal diffusion is the first element of the temperature budget being called. The subroutine \textit{hdifft} can be found in \textit{horizontal\_mix.F90} at the line 413. The variable WORKN changes its name to HDTK. There are three diffusion schemes: laplacian (\textit{hmix\_del2}), biharmonic (\textit{hmix\_del4}) and Gent-McWilliams (\textit{hmix\_gm}). The simulation $b40.20th.track1.1deg.012$ used the Gent-McWilliams scheme. The routine computing the Gent-McWilliams mixing, \textit{hdifft\_gm}, is located in the file \textit{hmix\_gm.F90}. The variable HDTK in file \textit{horizontal\_mix.F90} changes its name to GTK in file \textit{hmix\_gm.F90}
+\begin{center} hmix\_gm.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+1162 \hspace{1em} subroutine hdifft\_gm (k, GTK, TMIX, UMIX, VMIX, this\_block)\\
+1344 \hspace{1em} TX(i,j,kk,n,bid) = KMASKE(i,j)  \&\\
+1445 \hspace{1em} * (TMIX(i+1,j,kk,n) - TMIX(i,j,kk,n))\\
+1440 \hspace{1em} TX(i,j,kk+1,n,bid) = KMASKE(i,j)  \&\\
+1441 \hspace{1em} * (TMIX(i+1,j,kk+1,n) - TMIX(i,j,kk+1,n))\\
+2023 \hspace{1em} WORK3(i,j) = KAPPA\_ISOP(i,  j,ktp,k,bid)  \&\\
+2024 \hspace{1em} + HOR\_DIFF  (i,  j,ktp,k,bid)  \&\\
+2025 \hspace{1em} + KAPPA\_ISOP(i,  j,kbt,k,bid)  \&\\
+2026 \hspace{1em} + HOR\_DIFF  (i,  j,kbt,k,bid)  \&\\
+2027 \hspace{1em} + KAPPA\_ISOP(i+1,j,ktp,k,bid)  \&\\
+2028 \hspace{1em} + HOR\_DIFF  (i+1,j,ktp,k,bid)  \&\\
+2029 \hspace{1em} + KAPPA\_ISOP(i+1,j,kbt,k,bid)  \&\\
+2030 \hspace{1em} + HOR\_DIFF  (i+1,j,kbt,k,bid)\\
+2076 \hspace{1em} FX(:,:,n) = dz(k) * CX * TX(:,:,k,n,bid) * WORK3\\
+2077 \hspace{1em} FY(:,:,n) = dz(k) * CY * TY(:,:,k,n,bid) * WORK4 \\
+2340 \hspace{1em} GTK(i,j,n) = ( FX(i,j,n) - FX(i-1,j,n)  \&\\
+2341 \hspace{1em}  + FY(i,j,n) - FY(i,j-1,n)  \&\\
+2342 \hspace{1em}  + FZTOP(i,j,n,bid) - fz )*dzr(k)*TAREA\_R(i,j,bid)
+\end{quotation}
+CX is related to the grid. TMIX is the tracer at the mixing time level. KMASKE is the ocean mask for the east side of grid cells. The CCSM grid places the tracers at the centre of the grid, figure \ref{Bgrid}. 
+
+To calculate the tracer diffusion, it is required to compute the tracer value at the sides of the cell times the diffusion component. TX and TY are the tracer values at the east side of the cell and at the north side of the cell respectively. WORK3 and WORK4 are the diffusion component on the east side and north side of the cell respectively.  FX is the eastward diffusion of heat on the east side of the cell and FY is the northward diffusion of heat on the north side of the cell. Finally, GTK is the divergence of diffusion of a cell. 
+
+Once GTK is sent back in \textit{horizontal\_mix.F90} as HDTK, it is integrated vertically and output as variable HDIFT. 
+\begin{center} horizontal\_mix.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+333 \hspace{1em} call define\_tavg\_field(tavg\_HDIFT,'HDIFT',2,   \&\\
+334 \hspace{1em} long\_name='Vertically Integrated Horz Mix T tendency', \&\\
+335 \hspace{1em} coordinates='TLONG TLAT time',   \&\\
+336 \hspace{1em} units='centimeter degC/s', grid\_loc='2110')\\
+413 \hspace{1em} subroutine hdifft(k, HDTK, TMIX, UMIX, VMIX, this\_block)\\
+485 \hspace{1em} where (k <= KMT(:,:,bid))\\
+486 \hspace{1em} WORK = dz(k)*HDTK(:,:,1)\\
+491 \hspace{1em} call accumulate\_tavg\_field(WORK,tavg\_HDIFT,bid,k)
+\end{quotation}
+KMT gives the index of the deepest grid cell on T grid. The CCSM code defines output field using function \textit{define\_tavg\_field} and then averages and stores date using function \textit{accumulate\_tavg\_field}. Here, the variable tavg\_HDIFT is linked to the output variable HDIFT in line 333. The variable work is averaged as tavg\_HDIFT which will be output as HDIFT, line 491. 
+
+The MOAR outputs three extra variables for diffusion: HDIFE\_TEMP, HDIFN\_TEMP, HDIFB\_TEMP. There is nothing about those variables in the code. Based on their definition using the terminal command ncdump, it is reasonable to believe that HDIFE\_TEMP is FX in line 2076 and HDIFN\_TEMP is FY in line 2077. FX and FY units are $cm^3\,^\circ C/s$ while HDIFE\_TEMP and HDIFN\_TEMP are $^\circ C/s$. Therefore we believe, FX and FY have been divided by TAREA and dz to give HDIFE\_TEMP and HDIFN\_TEMP. 
+
+\begin{figure}[t]
+\center
+\includegraphics[trim={7cm 2cm 7cm 3cm}, width=0.75\textwidth]{EnergyBudget/HDIFENT.jpg}
+\caption{Difference between HDIFT and its reconstruction from HDIFE\_TEMP and HDIFN\_TEMP in $W/m^2$.}
+\label{hdifent}
+\end{figure}
+
+We can test our hypothesis by reconstructing HDIFT from the vertically integrated divergence of HDIFE\_TEMP and HDIFN\_TEMP. Following lines 2340 and 2341 in hmix\_gm.F90, the divergence is given by 
+\begin{align}\label{diveq}
+HDIFE&\_TEMP_{i \, j}\cdot  TAREA_{i \, j}- HDIFE\_TEMP_{i-1 \, j}\cdot TAREA_{i-1 \, j} \\
+&+ HDIFN\_TEMP_{i \, j}\cdot TAREA_{i \, j} - HDIFN\_TEMP_{i \, j-1}\cdot TAREA_{i \, j-1}.
+\end{align}
+Using the output of the history file b40.20th.track1.1deg.012.pop.h.1998-12.nc, the error between HDIFT and its reconstruction peaks at $0.03 \, W/m^2$, figure \ref{hdifent}. We conclude that HDIFE\_TEMP and HDIFN\_TEMP are the eastward and northward diffusive heat flux respectively. 
+
+In conclusion, the vertically integrated divergence of the ocean diffusive heat flux is stored by the CCSM as HDIFT. For the MOAR of the CCSM4, extra variables are output: the eastward diffusive heat flux HDIFE\_TEMP and the northward diffusive heat flux HDIFN\_TEMP. 
+
+
+\subsection{Advection}\label{aAdv}
+
+The second element of the temperature budget is the heat advection calculated in subroutine \textit{advt} which can be found in the file \textit{advection.F90}. The variable WORKN changes its name to LTK. 
+\begin{samepage}
+\begin{center} advection.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+1602 \hspace{1em} subroutine advt(k,LTK,WTK,TMIX,TRCR,UUU,VVV,this\_block)\\
+2513 	\hspace{1em} LTK(i,j,n) = p5*((VTN(i,j)-VTN(i,j-1)+UTE(i,j)-UTE(i-1,j))  \&\\
+2514 	\hspace{1em} *TRCR(i  ,j  ,k,n) +           \&\\
+2515 	\hspace{1em} VTN(i  ,j  )*TRCR(i  ,j+1,k,n) -           \&\\
+2516 	\hspace{1em} VTN(i  ,j-1)*TRCR(i  ,j-1,k,n) +           \&\\
+2517 	\hspace{1em} UTE(i  ,j  )*TRCR(i+1,j  ,k,n) -           \&\\
+2518 	\hspace{1em} UTE(i-1,j  )*TRCR(i-1,j  ,k,n))*           \&\\
+2519 	\hspace{1em} TAREA\_R(i,j,bid)/ \& \\
+2548 	\hspace{1em} LTK(:,:,n) = LTK(:,:,n) + dz2r(k)*WTK*  \&\\
+2549 	\hspace{1em}  (TRCR(:,:,k-1,n) + TRCR(:,:,k  ,n))\\
+2562		\hspace{1em}          LTK(:,:,n) = LTK(:,:,n) - dz2r(k)*WTKB* \&\\
+2563 	\hspace{1em}                         (TRCR(:,:,k,n) + TRCR(:,:,k+1,n))
+\end{quotation}
+\end{samepage}
+VTN is the northward velocity located on the north side of the cell and UET is the eastward velocity on the east side of the cell. LTK starts by computing the divergence of horizontal tracer transport. It then adds vertical tracer transport at the top of the cell and then at the bottom of the cell. 
+
+The variable LTK is then multiplied by minus the vertical length of the cell, summed vertically and stored as ADVT. 
+\begin{center} advection.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+\phantom{1}782 \hspace{1em} call define\_tavg\_field(tavg\_ADV\_TRACER(1),'ADVT',2,       \&\\
+\phantom{1}783 \hspace{1em} long\_name='Vertically-Integrated T Advection Tendency',\&\\
+\phantom{1}784 \hspace{1em} units='centimeter degC/s', grid\_loc='2110',      \&\\
+\phantom{1}785 \hspace{1em} coordinates='TLONG TLAT time')\\
+1602 \hspace{1em} subroutine advt(k,LTK,WTK,TMIX,TRCR,UUU,VVV,this\_block)\\
+1922 \hspace{1em} WORK(i,j) = -dz(k)*LTK(i,j,n)\\
+1926 \hspace{1em} call accumulate\_tavg\_field(WORK,tavg\_ADV\_TRACER(n),bid,k)
+\end{quotation}
+In the temperature equation, -WORN is added to FT. The stored version of the vertically integrated heat advection already includes the minus sign as of line 1922. Therefore, the temperature budget made from the output of the CCSM will have the form $\frac{dT}{dt} = ADVT + \cdots$ instead of the usual $\frac{dT}{dt} + ADV = \cdots$.
+
+From the variable list, two other variables are giving advective heat transport: UET and VNT. They are calculated in file advection.F90. The following analysis depicts the investigative work required to understand how is calculated an output variable of the CCSM. 
+\begin{center} advection.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+\phantom{1}749 \hspace{1em}  call define\_tavg\_field(tavg\_UE\_TRACER(1),'UET',3,     \&\\
+\phantom{1}754 \hspace{1em} call define\_tavg\_field(tavg\_VN\_TRACER(1),'VNT',3,                   \&\\
+1777 \hspace{1em}         FVN =  p5*VTN*TAREA\_R(:,:,bid)\\
+1778  \hspace{1em}        FUE =  p5*UTE*TAREA\_R(:,:,bid)\\
+1820  \hspace{1em}             WORK = FUE*(        TRCR(:,:,k,n) + \&\\
+1821  \hspace{1em}                         eoshift(TRCR(:,:,k,n),dim=1,shift=1))\\
+1822  \hspace{1em}             call accumulate\_tavg\_field(WORK,tavg\_UE\_TRACER(n),bid,k)\\
+1835  \hspace{1em}            WORK = FVN*(        TRCR(:,:,k,n) + \&\\
+1836  \hspace{1em}                         eoshift(TRCR(:,:,k,n),dim=2,shift=1))\\
+1837  \hspace{1em}             call accumulate\_tavg\_field(WORK,tavg\_VN\_TRACER(n),bid,k)\\
+2337  \hspace{1em}        UTE(i,j) = p5*(UUU(i  ,j  ,k)*DYU(i  ,j  ,bid) + \&\\
+2338  \hspace{1em}                       UUU(i  ,j-1,k)*DYU(i  ,j-1,bid))\\
+2342  \hspace{1em}        VTN(i,j) = p5*(VVV(i  ,j  ,k)*DXU(i  ,j  ,bid) + \&\\
+2343  \hspace{1em}                       VVV(i-1,j  ,k)*DXU(i-1,j  ,bid))\\
+\end{quotation}
+The variable WORK is accumulated as $tavg\_UE\_TRACER$, line 1822, which is output as UET, line 749. WORK is calculated as west-east velocity on the east side of the cell times the length of the east side divided by the surface area, FUE, multiplied by the tracer on the east side of the cell. It is the advective tracer transport per surface area unit per vertical length unit.
+
+Putting together the pieces of code for ADVT, UET and VNT, it seems UET and VNT are the east and north part of ADVT divided by TAREA. The divergence must be calculated as shown in the diffusion section, equation \ref{diveq}. The error between ADVT and its reconstruction is extremely high for 34 columns over 122,880  peaking at $8000 \, W/m^2$. Once those 34 points are neglected, the error drops at a maximum of $0.1 \, W/m^2$, figure \ref{advt}. We do not fully understand the source of the high error over such a small number of columns. We believe it could come from storing errors from the hardware. 
+
+\begin{figure}[t]
+\center
+\includegraphics[trim={7cm 2cm 7cm 3cm}, width=0.75\textwidth]{EnergyBudget/ADVTUETVNT.jpg}
+\caption{Difference between ADVT and its reconstruction from UET and VNT in $W/m^2$.}
+\label{advt}
+\end{figure}
+
+In conclusion, the vertically integrated divergence of heat advection is stored in variable ADVT with an extra minus sign. Variables UET and VNT are the eastward and northward heat advection. 
+
+
+\subsubsection{Vertical diffusion}\label{vdiff}
+
+The third element of the temperature equation is the vertical diffusion. It is calculated in file \textit{vertical\_mix.F90}. The variable WORKN changes its name to VDTK. 
+\begin{center} vertical\_mix.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+645 \hspace{1em} subroutine vdifft(k, VDTK, TOLD, STF, this\_block)\\
+733 \hspace{1em} if (k == 1) then\\
+734 \hspace{1em}        VTF(:,:,n,bid) = merge(STF(:,:,n), c0, KMT(:,:,bid) >= 1)\\
+735 \hspace{1em}     endif\\
+765 \hspace{1em}         VTFB = merge(VDC(:,:,kvdc,mt2,bid)*                      \&\\
+766 \hspace{1em}                     (TOLD(:,:,k  ,n) - TOLD(:,:,kp1,n))*dzwr(k) \&\\
+767 \hspace{1em}                     ,c0, KMT(:,:,bid) > k)\\
+771  \hspace{1em}          VTFB = merge( -bottom\_heat\_flx, VTFB,      \&\\
+ 772  \hspace{1em}                      k == KMT(:,:,bid) .and.       \&\\
+773   \hspace{1em}                      zw(k) >= bottom\_heat\_flx\_depth)\\
+777   \hspace{1em}      VDTK(:,:,n) = merge((VTF(:,:,n,bid) - VTFB)*dzr(k), \&\\
+ 778   \hspace{1em}                         c0, k <= KMT(:,:,bid))\\
+  788   \hspace{1em}       VTF(:,:,n,bid) = VTFB  \\
+\end{quotation}
+VDTK is calculated as the difference between VTF and VTFB. They are the vertical heat diffusion at the top and the bottom of the cell respectively. The model sets the vertical heat diffusion at the bottom of the ocean at zero. It then calculates the bottom heat diffusion of the next cell by multiplying the diffusivity, VDC, and the temperature at the bottom of the cell. The surface heat diffusion of the lower cell is defined by the bottom heat diffusion of the higher cell. For the first layer, the vertical heat diffusion is defined as STF. It is defined in the file forcing\_coupled.F90
+\begin{center} forcing\_coupled.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+715 \hspace{1em}     STF(:,:,1,iblock) = (EVAP\_F(:,:,iblock)*latent\_heat\_vapor             \&\\
+716 \hspace{1em}                          + SENH\_F(:,:,iblock) + LWUP\_F(:,:,iblock)        \&\\
+717 \hspace{1em}                          + LWDN\_F(:,:,iblock) + MELTH\_F(:,:,iblock)       \&\\
+718 \hspace{1em}                          -(SNOW\_F(:,:,iblock)+IOFF\_F(:,:,iblock)) * latent\_heat\_fusion\_mks)*  \&\\
+719 \hspace{1em}                            RCALCT(:,:,iblock)*hflux\_factor 
+\end{quotation}
+STF includes several surface fluxes: evaporation, sensible heat, emitted and absorbed long wave, melt, snow and ice runoff. Note that the standard output files describe the latent heat of vapour units as KJ/Kg but it actually has units of J/Kg.
+
+The subroutine collecting the standard output variables, accumulate\_tavg\_field, is not called in subroutine vidfft for the variable VDTK. Hence, the vertical diffusion is not part of the standard output.  When integrated vertically, the diffusion at the top of a cell will be cancelled by the bottom of the following cell (line 788) leaving only the contribution from the bottom and top of the column. The bottom of the column is set at zero (line 778) and the top of the column holds surface fluxes (lines 670, 734-735). The variable STF plus the shortwave radiation absorbed by the ocean is output as variable SHF. 
+\begin{center} forcing.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+445 \hspace{1em}       WORK = (STF(:,:,1,iblock)+SHF\_QSW(:,:,iblock))/ \&\\
+446 \hspace{1em}                  hflux\_factor ! $W/m^2$\\
+451 \hspace{1em}        call accumulate\_tavg\_field(WORK,tavg\_SHF,iblock,1)\\
+\end{quotation}
+Every surface fluxes are output separately. When the definition of SHF is compared to the output files, the resulting error is machine accurate, figure \ref{shferr}. 
+
+\begin{figure}[t]
+\center
+\includegraphics[trim={7cm 2cm 7cm 3cm}, width=0.75\textwidth]{EnergyBudget/SHFerr.jpg}
+\caption{Code definition of SHF verification with the output variables: SHF, EVAP\_F, SENH\_F, LWUP\_F, LWDN\_F, MELTH\_F, SNOW\_F, IOFF\_F, SHF\_QSW.}
+\label{shferr}
+\end{figure}
+
+In conclusion, the vertical diffusion is not output by the CCSM. It is possible to work around it by calculating the vertically integrated budget. The only non-zero terms left after the integration are: evaporation, sensible heat, emitted and absorbed longwave, melt, snow and ice runoff. They are output separately or as a bundle with the shortwave radiation in variable SHF. 
+
+
+
+
+
+\subsection{Reset temperature}
+
+The fourth element of the temperature budget, set\_pt\_interior, is calculated in file forcing\_pt\_interior.F90. The variable WORN changes its name to PT\_SOURCE. 
+\begin{center} forcing\_pt\_interior.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+677 \hspace{1em} subroutine set\_pt\_interior(k,this\_block,PT\_SOURCE)\\
+756 \hspace{1em}           DPT\_INTERIOR = pt\_interior\_restore\_rtau*         \&\\
+757 \hspace{1em}                         (PT\_INTERIOR\_DATA(:,:,k,bid,now) - \&\\
+758 \hspace{1em}                          TRACER(:,:,k,1,curtime,bid))\\
+766 \hspace{1em}     PT\_SOURCE = PT\_SOURCE + DPT\_INTERIOR\\
+\end{quotation}
+The constant pt\_interior\_restore\_rtau is defined as $(24*60^2*10^{20})^{-1}$. It is the reciprocal of the restoring timescale. The variable PT\_INTERIOR\_DATA is defined as the limit temperature the model allows. If the computed temperature exceeds the limit, the model restores the temperature at the limit. It is not part of the standard output. Though, the variable QFLUX, which is part of the standard output, seems to hold that role. It is defined in ice.F90.
+\begin{center} ice.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+451 \hspace{1em}            POTICE = (TFRZ - TNEW(:,:,k,1))*DZT(:,:,k,bid)\\
+506 \hspace{1em}      QICE(:,:,bid) = QICE(:,:,bid) - POTICE\\
+692  \hspace{1em}   QFLUX(:,:,bid) = QICE(:,:,bid)/tlast\_ice/hflux\_factor\\
+\end{quotation}
+\noindent From the code, \cite{Hunke:2008ly} and \cite{SG4},
+\begin{equation}
+ QFLUX = \frac{\Theta_f - \Theta}{\Delta t_{ice}} \, dz \, \rho_w \, C_{p\,w}.
+\end{equation}
+It restores any temperature below the freezing temperature and transform this energy in frazil ice formation. 
+
+In conclusion, the restoring temperature flux is not part of the standard output. We believe the variable QFLUX holds that role but we did not find any direct link with PT\_SOURCE.
+
+\subsection{KPP}
+
+The fifth element of the temperature equation, add\_kpp\_sources, is calculated in vix\_kpp.F90. It is the nonlocal K-profile parameterization for vertical mixing, or KPP, defined in \cite{ROG:ROG1432}. The variable WORKN changes its name to KPP\_SRC.
+\begin{center} vmix\_kpp.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+896 \hspace{1em}            KPP\_SRC(:,:,k,n,bid) = STF(:,:,n)/DZT(:,:,k,bid)         \&\\
+897     \hspace{1em}                            *( VDC(:,:,k-1,mt2)*GHAT(:,:,k-1)   \&\\
+898    \hspace{1em}                               -VDC(:,:,k  ,mt2)*GHAT(:,:,k  ))\\
+\end{quotation}
+VDC is the diffusivity and GHAT is the non-local mixing coefficient. The temperature nonlocal vertical mixing is output as variable KPP\_SRC\_TEMP. Note that KPP\_SRC\_TEMP sums up to zero when integrated vertically, figure \ref{kpp}. 
+
+\begin{figure}
+\center
+\includegraphics[trim={7cm 2cm 7cm 3cm}, width=0.75\textwidth]{EnergyBudget/kpp.jpg}
+\caption{Yearly vertically integrated KPP mixing term in $W/m^2$.}
+\label{kpp}
+\end{figure}
+
+
+\subsection{Absorbed short wave}
+
+The sixth, and last, element of the temperature budget is add\_sw\_absorb and is calculated in file sw\_absorption.F90. The variable WORKN changes its name to WORK. 
+\begin{center} sw\_absorption.F90 \end{center}
+\begin{quotation}
+\small
+\linespread{0.5}\selectfont\noindent
+868 \hspace{1em}     WORK = max(SHF\_QSW,c0) !*** insure no neg QSW - store in work\\
+\end{quotation}
+\noindent The variable SHF\_QSW is the short wave absorbed from the ocean. It is given to the ocean component of the CCSM from the coupler that acquired the data from the atmosphere and sea ice components. It is output individually and as a bundle with all the other surface fluxes as SHF. SHF has already been discussed in section \ref{vdiff}.
+
+\subsection{Conclusion}
+
+Accounting for the six subroutines included in the temperature equation, the required variables for the vertically integrated budget are: HDIFT for the horizontal diffusion, ADVT for the horizontal advection, SHF for the surface forcing included in the vertical diffusion and the short wave absorption, QFLUX for the restoring temperature. The column budget equation becomes:
+\begin{equation}
+\sum_z \frac{\partial T}{\partial t} = HDIFT+ADVT+SHF+QFLUX.
+\end{equation}
+
+\end{appendices}
+
+
+
+
+

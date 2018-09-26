@@ -1,0 +1,112 @@
+\documentclass[12pt]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}% french accents
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+%\usepackage[nottoc,numbib]{tocbibind}% bibliography in table of contents
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2.2cm,right=2.2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{setspace}
+\doublespacing
+\usepackage{natbib}
+\usepackage{apalike}
+\setcitestyle{authoryear,open={[},close={]}}
+\usepackage{chapterbib}
+
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks,allcolors=green]{hyperref}
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+\usepackage{float}
+\usepackage{todonotes}
+
+\title{Heat fluxes affecting sea ice}
+\author{Louis Renaud-Desjardins}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           titlepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\begin{center}
+\begin{minipage}{0.75\linewidth}
+    \centering
+%Thesis title
+    {\LARGE \rule{\textwidth}{0.4pt} \\ \textbf{Ocean heat fluxes affecting sea-ice in the Community Climate System Model version 3} \par \rule{\textwidth}{0.4pt}\\}
+    \vspace{5cm}
+%Author's name
+    {\large Louis Renaud-Desjardins  \\ Atmospheric and Ocean Sciences \\ McGill University, Montréal, Québec \\ DATE??? \par}
+    \vspace{6cm}
+%Degree
+    { A thesis submitted to McGill University in partial fulfillment of the requirements of the degree of Doctor of Philosophy. \\ \textcopyright Louis Renaud-Desjardins 2018\par}
+\end{minipage}
+\end{center}
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           Plan
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \begin{enumerate}
+% \item[Chapter 1] Rapid sea ice loss
+% 	\begin{enumerate}
+%     \item Review of Holland, Bitz, Tremblay 2006a
+%     \item Sea ice area vs Sea ice extent vs Sea ice volume
+%     \item Dynamical processes affecting ice volume
+%     \item Thermodynamical processes affecting ice volume
+%     \item Processes affecting sea ice area (not done)
+% 	\end{enumerate}
+% \item[~]
+% \item[Chapter 2] Vertical heat fluxes
+% 	\begin{enumerate}
+%     \item Energy Budget of the CCSM4
+%     	\begin{enumerate}
+%     	\item Method 1: Code done by NCAR
+%         \item Method 2: Needle in a haystack
+%         \item Method 3: CCSM4 code verification
+%     	\end{enumerate}
+%     \item Review of Gent-McWilliams 
+% 	\item Review of KPP parameterization
+% 	\item Review of Submesoscale parameterization
+% 	\end{enumerate}
+% \item[~]    
+% \item[Chapter 3] Arctic Ocean's gates heat fluxes
+% 	\begin{enumerate}
+% 	\item Gates energy input in the CCSM4/3
+%     \item Difficult comparison with observations
+%     \item Problem in gates heat fluxes comparison: Review of Schauer
+% 	\end{enumerate}
+% \end{enumerate}
+% % Where can I put a review of Review of Stroeve and Notz 2016. Intro?
+% \pagebreak
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{roman}
+\include{Abstract}
+\include{Resume}
+
+\tableofcontents
+\pagebreak
+\listoffigures
+\pagebreak
+
+\pagenumbering{arabic}
+\include{Introduction}
+\include{Processes}
+\include{EnergyBudget}
+\include{Radiation}
+\include{GatesHeatFluxes}
+\include{Conclusion}
+
+
+\end{document}

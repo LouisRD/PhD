@@ -1,0 +1,104 @@
+\documentclass[12pt]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}% french accents
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+%\usepackage[nottoc,numbib]{tocbibind}% bibliography in table of contents
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2.2cm,right=2.2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{setspace}
+\doublespacing
+
+
+%\usepackage[style=alphabetic,citestyle=authoryear ]{biblatex}
+\usepackage{natbib}
+%\usepackage{apalike}
+%\setcitestyle{authoryear,open={[},close={]}}
+%\usepackage{chapterbib}
+
+
+%% Useful packages
+\usepackage{amsmath}
+\numberwithin{equation}{section}
+\numberwithin{table}{section}
+\allowdisplaybreaks
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks,allcolors=blue]{hyperref}
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+\usepackage{float}
+\usepackage{todonotes}
+\usepackage[titletoc]{appendix}
+\usepackage{array}
+\usepackage{xcolor,colortbl}
+\usepackage{color,soul}
+\usepackage{tikz}
+\usepackage{cancel}
+
+
+
+\title{Heat fluxes affecting sea ice}
+\author{Louis Renaud-Desjardins}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           titlepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\begin{center}
+\begin{minipage}{0.75\linewidth}
+    \centering
+%Thesis title
+    {\LARGE \rule{\textwidth}{0.4pt} \\ \textbf{Ocean Heat Fluxes Affecting Sea-Ice in the Community Climate System Model Version 3} \par \rule{\textwidth}{0.4pt}\\}
+    \vspace{5cm}
+%Author's name
+    {\large Louis Renaud-Desjardins  \\ Atmospheric and Ocean Sciences \\ McGill University, Montréal, Québec \\ DATE??? \par}
+    \vspace{6cm}
+%Degree
+    { A thesis submitted to McGill University in partial fulfillment of the requirements of the degree of Doctor of Philosophy. \\ \textcopyright Louis Renaud-Desjardins 2018\par}
+\end{minipage}
+\end{center}
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{roman}
+\include{Abstract}
+\include{Resume}
+\include{CoA}
+\include{SoO}
+
+\tableofcontents
+\pagebreak
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+\pagebreak
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+\pagebreak
+
+\pagenumbering{arabic}
+\include{Introduction}
+\include{TheArctic}
+\include{Processes}
+\include{EnergyBudget2}
+\include{GatesHeatFluxes}
+\include{Conclusion}
+
+\include{Appendix}
+% table of abbreviation
+\include{toabb}
+
+
+% table of CCSM variables
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{apa}
+\bibliography{1bib.bib}
+
+
+\end{document}

@@ -1,0 +1,377 @@
+\section{Physical processes affecting sea ice in the Community Climate System Model (CCSM) version 3}\label{processes}
+
+The interactions between the ocean and the sea ice are difficult to measure directly. For that reason, our understanding of those interactions is limited. Models allow profound analysis of the ocean-sea ice dynamic though. We decided to use the results of the CCSM version 3 to examine the scope of the physical processes affecting sea ice and the different simulations between themselves. The CCSM is a global climate model. Its third version predicts the increase of green house gases and warming following the SRES. The three main scenarios of the SRES are: B1 scenario being optimistic with $550$ ppm CO2 by 2100, the pessimistic A2 scenario with $850$ ppm and the reasonable, \textit{middle of the road},  A1B scenario with $720$ ppm \citep{IPCC4}. The SRES A1B is considered the most probable and acceptable scenario since it is a middle of the road scenario. It can satisfy the environmentalist and the conservators. Making it the most suitable and convincing scenario for our future. Though the A1B scenario is between A2 and B1 by 2100, it possesses the highest forcing before 2060 - the period exhibiting rapid sea ice decline. More information on the future scenarios can be found in section \ref{fs}.
+
+\cite{ISI:000242942100008} found out that the seven simulations of the CCSM3 under the SRES A1B depicted abrupt reductions of Arctic September sea ice extent with an ice-free summer as early as 2040. This paper received a lot of attention\footnote{Cited 359 times. Verified on \textit{https://apps.webofknowledge.com} May 26, 2017.}. The idea of an ice-free summer Arctic Ocean as soon as 2040 under a \textit{reasonable} scenario with nonlinear evolution of the sea ice extent was unheard of. 
+
+This chapter investigates all the sources of sea ice loss with a special interest for thermodynamic processes in conjunction with the years of abrupt loss of September sea ice extent. To do so, we narrow our investigation to the SRES A1B simulations of the CCSM3 which are the same ones used in \cite{ISI:000242942100008}. Their main results are presented in section \ref{intro}. An overview of the role of the Arctic Ocean on sea ice melting is presented in section \ref{OtoIm}. We directed our attention on sea ice volume, section \ref{seaicevolume}, because any variations in thermodynamic balance causes the sea ice volume to change. Section \ref{seaicevolume} marks the beginning of original results. The contributions to volume and area changes from dynamic and thermodynamic sources are presented in section \ref{DvsT}. The sea ice flushed out through each gates of the Arctic Ocean is described in section \ref{transport}. Thermodynamic processes are examined in section \ref{TH}. They include surface, bottom and lateral melt and basal and frazil sea ice formation. A discussion of all the processes is presented in section \ref{conc1}. 
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{Rapid declines}\label{intro}
+
+\cite{ISI:000242942100008}  defined an abrupt loss event to be an event for which the time derivative of the five-year running mean of September sea ice extent exceeds $-0.5$ million $km^2/y$. When such events arose during the CCSM3 simulations, the average sea ice thickness in March declined rapidly but not in a surprising manner; there has been previous rapid decline of March thickness steeper than during the abrupt loss events. They found that the relative anomalies of ocean heat transport into the Arctic Ocean and absorbed short-wave radiation by the Arctic Ocean are highly correlated. It suggests that ocean heat transport is an important vector of sea ice loss which leaves more open water absorbing short-wave radiation. This hypothesis is supported by a one to two-year lag between the ocean heat transport and the sea ice thickness; the peaks of ocean heat transport come one to two years before sea ice thickness peaks. Once the initial loss is triggered by ocean heat transport, the albedo feedback kicks in leading to an ice-free Arctic Ocean during summer time.
+
+For simplicity, The Arctic domain considered in this thesis follows constant latitude or longitude index in the rotated grid, see figure \ref{AA}. The domain has a total ocean area of $8.57 \cdot 10^6 \, km^3$. All fluxes are stored in units of $W/m^2$. A spatial average of the flux requires to weigh the variable by the surface area to obtain units of power, watts, sum over the domain and then divide by the total area,
+\begin{equation}
+\overline{F} = \frac{\int F\, dA}{A} = \frac{\sum F\cdot A_{cell}}{A_{total}}.
+\end{equation}
+
+\begin{figure}
+\center
+\includegraphics[width=0.75\textwidth]{Processes/AA+.jpg}
+\caption{Arctic Ocean domain including the four main gates considered in this study: Fram Strait, Barents Sea Opening (BSO), Bering Strait and Canadian Arctic Archipelago (CAA).  For simplicity, All gates are defined along lines of constant latitude or longitude index in the rotated grid.}
+\label{AA}
+\end{figure}
+
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{Ocean to sea ice thermodynamic interactions}\label{OtoIm}
+
+This section gathers important results on the thermodynamic interaction between the Arctic Ocean and its sea ice. It discusses: (1) the theoretical value for the ocean-sea ice heat flux along measurements supporting it, (2) measurements contradicting the theoretical value, (3) impact of the warm Atlantic waters on sea ice; these warm Atlantic waters are located 300 metres deep and could melt the entire Arctic sea ice if its energy reached the surface.
+
+\citet{ISI:A1971I688400007} determined that a constant ocean to sea ice heat flux of $2{\text -}4 \,W/m^2$ throughout the whole year is necessary to reproduce the  measured sea-ice thickness evolution during a full seasonal cycle using a one-dimensional thermodynamic sea-ice model forced with observed radiative and turbulent heat fluxes. They also showed that with an extra $8 \, W/m^2$ of oceanic heat flux, the amount of ice melting in the summer is greater or equal to the amount of ice formation during winter, leading to an ice-free summer. This yearly average of $2 \,W/m^2$ is the expected value for the ocean-sea ice heat flux. \citet{ISI:A1982NF38100017} measured ocean heat fluxes that are close to $2 \, W/m^2$ from March to May north of the Fram Strait supporting the results from \citet{ISI:A1971I688400007}. The experiment consisted of a thermocouple string and two thickness gauges on three sites distant by 150 metres forming a triangle. Ocean heat, sea ice latent and sensible heat are causing sea ice thickness changes. The thermocouple string measurements allow a calculation of the conductive heat flux through sea ice and sensible heat flux. The thickness gauge measurements allow a calculation of the sea ice thickness changes and latent heat flux. The only missing input is the ocean heat transfer to sea ice. It is calculated as the residual of all the other terms, 
+\begin{equation}
+F_{ocn} = \frac{dh}{dt} - F_{lat}-F_{sens}.
+\end{equation}
+\citet{GRL:GRL17601} recorded an averaged oceanic heat flux of $2.6 \, W/m^2$ using a buoy deployed close to the North Pole that drifted through the Fram Strait. When the buoy reached the Yerkman Plateau (North of Svalbard), the oceanic heat flux reached values as high as $22 \, W/m^2$. The sharp bathymetry and the absence of cold halocline layer led to a large ocean heat flux linked with tidal waves. 
+
+Many measurements point to a higher ocean-sea ice heat flux than the expected $2{\text -}4 \,W/m^2$. \citet{ISI:A1989AP36800003} calculated an averaged oceanic heat flux of $14 \, W/m^2$ from a buoy moving through the Fram strait from December 14th$^{th}$ 1987 to January 2nd$^{nd}$ 1988. By the end of December 1987, the buoy entered warm water and measured an ocean heat flux of $128 \, W/m^2$. Using the 1975 Arctic Ice Dynamics Joint EXperiment (AIDJEX) data, \citet{4164498} calculated a strong seasonal cycle of the ocean to sea ice heat flux with a yearly average of $5.1 \, W/m^2$. The maximum values of the ocean to sea ice heat flux were of $40-60 \, W/m^2$ in August and almost zero in winter. The experiment consisted of Conductivity-Temperature-Depth (CTD) profilers from four drifting stations. They also concluded that the energy was mainly coming from solar short-wave radiation through sea ice rather than vertical advection of warmer waters. \citet{GRL:GRL15407} observed values of ocean to sea ice heat fluxes of $2 \, W/m^2$ during fall, winter and spring and values around $33 \, W/m^2$ during the summer months when solar radiation enters the ocean's surface through leads and open water, causing basal ice melt. The measurements were done at the Surface HEat Budget of the Arctic (SHEBA) experiment located North of Alaska in the Beaufort Sea and Chukchi Sea. They used an Ice-Mass-Balance (IMB) buoy and treated the oceanic heat flux as a residual following \citet{ISI:A1982NF38100017}. 
+
+The warm Atlantic waters located between 200 and 500 metres deep are a major threat to Arctic sea ice. If its energy reached the surface, the Arctic sea ice would vanish. \citet{Timmermans:2008fk} used Ice-Tethered Profilers (ITP) to determine the vertical ocean heat flux in the Canada Basin. They calculated vertical ocean heat fluxes via double-diffusive staircase between $0.05$ and  $0.3 W/m^2$. This is consistent with observed diffusivity coefficients of the order of $10^{-6} m^2/s$ obtained from  measurements made in 2005 in the Canada Basin, in the Lamonosov Ridge region and the Amundsen Basin by \citet{GRL:GRL24453}. \cite{Lique:2013uq} obtained the same results from four deployed moorings as part of the Beaufort Gyre Observing System in the Canada Basin during August 2003 and August 2011. On the other hand, during SHEBA a lead opened where the measuring equipment was and \citet{McPhee:2005uq} showed that the heat flux along this active lead was as large as $400 \, W/m^2$. The mechanism invoked to explain such large heat fluxes is Ekman pumping associated with a positive curl in the surface ice-ocean stresses ventilating relic heat trapped beneath the mixed layer from previous summers. More information on Ekman pumping in \cite{vallis}
+
+In summary, even if the expected value for the Arctic ocean-sea ice heat flux is a constant $2{\text -}4 \,W/m^2$, a strong seasonal cycle has been recorded varying from $0 \,W/m^2$ in winter up to $60 \, W/m^2$ in summer. The ocean-sea ice heat flux exhibits high spatial differences with higher values such as $128 \, W/m^2$ close to the gates of the Arctic Ocean. The warm Atlantic waters' energy is well confined to its depth with very low vertical heat fluxes though under leads, ridges or storm, the vertical ocean heat flux can reach $400 \, W/m^2$. All the ocean-sea ice heat fluxes presented here were calculated from changes in sea ice thickness or volume. From measurements, ocean to sea ice heat exchange is an impactful component of melt and sea ice formation. Therefore it is important to study it in climate models. In order to understand the role of heat fluxes on sea ice extent, one must start by inspecting sea ice volume.
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{Sea ice volume}\label{seaicevolume}
+
+Sea ice volume is always affected by dynamic and thermodynamic processes unlike sea ice extent. When the sea ice concentration of a defined zone - a grid cell for example- increases over  $15\%$ its full area is added to the sea ice extent. If the sea ice concentration decreases under $15\%$, its full area is subtracted from the sea ice extent. The variations in sea ice extent are not continuous and the sea ice can change significantly before the sea ice extent varies accordingly. The sea ice concentration is directly affected by dynamic processes which consist of moving a parcel of sea ice from one location to another. It transfers the sea ice concentration from a region/cell to another. In contrast, thermodynamic processes do not necessarily affect sea ice concentration. Sea ice thickness can grow or melt without influencing the sea ice concentration. For example, consider a fully covered region with two metres thick sea ice growing up to three metres. In this example the sea ice concentration does not change, only the volume. 
+
+Sea ice volume better represents the state of sea ice and the effect of physical processes on it. However, most studies focus on sea ice extent. It is because sea ice extent observations are more reliable than sea ice thickness or volume that scientists are more interested in sea ice extent. Models are not restrained as are observations. It is possible to study sea ice volume and every processes associated to it if they are correctly output. This section covers: (1) a comparison between sea ice volume and sea ice extent in the literature, (2) the sea ice volume calculation in the CICE model and (3) a description of the evolution of the sea ice volume for the six simulations of the A1B SRES of the CCSM3.
+
+\citet{overland2013} defined the study of sea ice volume over sea ice extent as \textit{trendsetters}. Two groups of \textit{trendsetters} are active: \citet{schweiger2011} and \citet{Maslowski2012Fu}. \citet{schweiger2011} use PIOMAS results for sea ice volume. The NSIDC sea ice extent trend during the 1979 to 2012 period has been of $-14.2\%/decade$ while the PIOMAS sea ice volume trend for the same period is of $-27.8\%/decade$ or $-2.8\cdot 1000\, km^3 /y$. The sea ice volume is changing at a faster rate than sea ice extent implying that sea ice volume offers a more insightful understanding of sea ice decline than sea ice extent. \citet{Maslowski2012Fu} used the Naval Postgraduate School Arctic Modelling Effort (NAME) model \citep{maslowski2004} results. The sea ice volume from NAME is stable from 1980 to 1995 where it starts to decrease at a rate of $-1.1 \cdot 1000\, km^3 /y$  predicting a summer ice-free Arctic Ocean before 2020. The actual value at which the sea ice volume decreases is controversial. The fact that sea ice volume decreases at a much faster rate than the sea ice extent is indisputable.
+
+The CICE model computes the ice volume for each thickness category, $n$, per unit area as \citep{Hunke:2008ly}
+\begin{equation}
+SIV_n = SIC_n\cdot h_n. 
+\end{equation}
+where $SIC_n$ is the sea ice concentration for the specified thickness category in percentage and $h_n$ is its ice thickness in metres. For the SRES A1B simulations of the CCSM3, the number of thickness category is five plus open water. The average thickness of a cell is given by the sum of the sea ice volume per unit area of all the thickness categories. The sea ice volume of a cell is obtained by multiplying the average thickness, $h_i$, by the cell area, $A$,
+\begin{equation}
+SIV = h_i \cdot A. 
+\end{equation}
+Note that the subscript $i$ refers ice. 
+%\footnote{The cell's average thickness variable is called $hi$. It is defined in file \textit{ice\_history.F90}, lines 1360 to 1364, as the code variable \textit{vice} which is defined in \textit{ice\_itd.F90} at line 400.}
+
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={7cm 3cm 7cm 3cm}, width=0.85\linewidth]{Processes/volume2.jpg}
+\caption{Yearly maximum and minimum Arctic sea ice volume. The vertical lines represents the years of rapid September sea ice decline.}
+\label{icevol}
+\end{figure}
+
+I have calculated the sea ice volume evolution for the six SRES A1B simulations of the CCSM3. In each simulations, the yearly maximum (winter) and minimum (summer) Arctic sea ice volume decreases similarly with approximately a $10\cdot1000\,km^3$ difference as illustrated in figure \ref{icevol}. The minimum sea ice volume is more interesting since it can show when the Arctic Ocean becomes ice free. For these two reasons, only the minimum sea ice volume will be described. The yearly minimum sea ice volume starts near $25\cdot1000\,km^3$ for all simulations. Between 1900 and 1950, an accumulation of sea ice volume occurs which is immediately lost. Simulation c has the most prominent one with an increase of $7\cdot1000\,km^3$ from 1900 to 1920 which is lost by 1930. From 1950 to 2000, sea ice volume decreases at a mean rate of $-0.11\cdot1000\,km^3/y$ with simulation a losing the most sea ice volume at $-0.18\cdot1000\,km^3/y$ and simulation g.ES01 losing the least sea ice volume $-0.08\cdot1000\,km^3/y$. From 2000 to 2050, the sea ice volume decreases rapidly at a mean rate of $-0.23\cdot1000\,km^3/y$ with a maximum rate of $-0.25\cdot1000\,km^3/y$ in simulation c and g.ES01 and a minimum rate of $-0.19\cdot1000\,km^3/y$ in simulation a. During the abrupt loss of September sea ice extent, the volume decreases slightly more rapidly but not in an exceptional way. It also has been described in \citet{ISI:000242942100008}. For the rest of the simulated time, the sea ice volume decreases slowly at a mean rate of $-0.02\cdot1000\,km^3/y$ ending up close to zero by 2100.
+
+The minimum sea ice volume decreases exponentially in function of the  A1B SRES forcing , see figure \ref{sivVSF}. The temporal evolution of the sea ice volume does not follow a comprehensive path while it is definite as a function of the extra forcing.
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={5cm 0cm 5cm 0cm},width=0.75\linewidth]{Processes/sivVSforcing.jpg}
+\caption{Left) Minimum sea ice volume as a function of A1B SRES forcing. Right) Semilog plot of sea ice volume in function of A1B SRES extra forcing. The linear trend of the right plot proves that the sea ice volume decreases exponentially in function of the A1B scenario forcing. Each colour represents a different simulation.}
+\label{sivVSF}
+\end{figure}
+The half life of the sea ice volume loss is $1\,W/m^2$, i.e. after each forcing increase of $1\,W/m^2$ half the sea ice is lost. Before 2000, the extra forcing is zero. Suddenly, in 2000 the extra forcing is set at $1.03\,W/m^2$ for the A1B SRES. Half the sea ice is lost when the forcing reaches $2.03\,W/m^2$. At $3.03\,W/m^2$, only one-forth of the initial sea ice volume is left. At $4.03\,W/m^2$, one-eighth is left. Etc. The sea ice volume evolution is determine by the forcing of the future scenario. Each forcing increment is not large enough to shock the system. If this result holds for all the other fields of the simulation, it could prove to be more effective to run models as a function of forcing instead of time. One simulation evolved through forcing offers answers for all future scenarios at once. A simulation evolved through time gives results only for a single scenario. 
+
+The September sea ice thickness spatially retreats abruptly in concurrence with the sea ice extent, see figure \ref{1m}. 
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={7cm 3cm 7cm 3cm},width=0.80\linewidth]{Processes/BandA1m.jpg}
+\caption{Dotted-blue) September one-metre sea ice thickness contour five years before the first rapid loss event. Solid-blue) September one-metre sea ice thickness contour five years after the last rapid loss event. Dotted-red) September sea ice extent (15\% sea ice concentration contour) five years before the first rapid loss event. Solid-red) September sea ice extent (15\% sea ice concentration contour) five years after the last rapid loss event.}
+\label{1m}
+\end{figure}
+Five years before the abrupt decline of September sea ice extent, the September region with sea ice thicker than one metre and the sea ice extent region are nearly the same (dotted lines of figure \ref{1m}). In simulations a and f.ES01, the sea ice thickness has already started to retreat to the northern coasts of Canadian and Greenland. Simulations b.ES01, c and e show a concurrent region extending up to Russia. Simulation g.ES01 shows a concurrent region covering the centre of the Arctic Ocean but not as far as reaching Russia. Five years after the abrupt loss September sea ice extent, the region with September sea ice thicker than one metre clings to the Canadian and Greenland coasts while the September sea ice extent extends weakly to the centre of the Arctic Ocean (solid lines of figure \ref{1m}). In simulations a, c and f.ES01, the sea ice extent does not reach beyond the centre of the Arctic Ocean. In comparison, in simulations b.ES01 and e, the sea ice extent stays close to the coasts and in simulation g.ES01, the sea ice extent clutches the coast. In each of the six simulations, there is a presence of thin ice on the Russian coast of the East Siberian Sea after the abrupt loss. Simulation g.ES01 has the largest amount of sea ice on the Russian coast. 
+
+Even the winter sea ice area starts to decrease after the Arctic Ocean is ice-free during summer time. This loss is mainly located at the entrance of the Barents Sea opening (figure \ref{march2099}). 
+\begin{figure}[t]
+\center
+\noindent\includegraphics[trim={8cm 1cm 8cm 3cm},width=0.85\linewidth]{Processes/MarchAice2099.jpg}
+\caption{March 2099 sea ice concentration.}
+\label{march2099}
+\end{figure}
+There is also a retreat at the entrance of the Bering Sea in simulations a, b.ES01 and e though modest. This kind of retreat is associated to warm surface ocean fluxes through the Bering Strait melting sea ice \citep{Woodgate2010}.
+
+ 
+
+% Mini conclusion. 
+
+On average for the month of September between 1950 and 2000, the sea ice volume of the A1B SRES simulations of the CCM3 lost $40\%$ of the volume compared to only $8\%$ of the sea ice extent. While the sea ice coverage decreases slowly, the sea ice volume plummets up to a point where it cannot decrease further without strongly affecting the sea ice concentration. In the CCSM, when the sea ice thickness is in the thinnest thickness category, half of the melting reduces thickness while the other half reduces sea ice area/concentration \citep{Hunke:2008ly}. In these simulations, the decrease of sea ice extent under $15\%$ of sea ice concentration is large enough to be considered an abrupt loss in the language of \cite{ISI:000242942100008}. Winter sea ice coverage decreases only after the summer Arctic Ocean is ice-free and is located at the gate the Barents Sea. The next section discusses the differences between the dynamic and the thermodynamic sources of sea ice volume loss. 
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{Dynamic vs thermodynamic processes}\label{DvsT}
+
+\cite{ISI:000242942100008} stated that the dynamic processes play little role in rapid loss of sea ice extent. The standard output of the CCSM3 includes four variables quantifying the strength of the dynamic and thermodynamic impact on SIA and SIV. Table \ref{vardt} lists the four variables. The dynamic processes include transport out of the Arctic Ocean and are described in section \ref{transport} followed by the thermodynamic processes in section \ref{TH}. The thermodynamic and dynamic impact on the sea ice area are presented first followed by their impact on the sea ice volume. The details of the dynamic and thermodynamic processes follows in sections \ref{transport} and \ref{TH} respectively.
+\begin{table}[H]
+\centering
+\begin{tabular}{l | l | c}
+\hline
+ Name  & Definition & Unit \\
+\hline
+  daidtd  & 	changes of sea ice area due to dynamic processes 	& $\% / day$  \\
+  daidtt  &    changes of sea ice area due to thermodynamic processes				& $\% / day$  \\
+  dvidtd  &    changes of sea ice volume due to dynamic processes	& $cm / day$\\
+  dvidtt & 	changes of sea ice volume due to thermodynamic processes & $cm / day$
+\end{tabular}
+\caption{CCSM variable names and definitions.} \label{vardt}
+\end{table}
+
+The thermodynamic processes increase the sea ice area by $10 \cdot10^6 \, km^2/y$ while the dynamic processes flush out of the Arctic the same amount of sea ice area from 1900 to 2000, as can be seen from figure \ref{daidt}. The thermodynamic processes spread sea ice while the dynamic processes break and evacuate the sea ice. From 2000 to 2100 the strength of thermodynamic and dynamic processes decrease at a rate of $0.035 \cdot10^6 \, km^2/y^2$ ending at $7.5 \cdot10^6 \, km^2/y$. Based on those simulations, one fourth of the creation of sea ice area will be lost by the end of the $21^{st}$ century. 
+
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={13cm 3cm 13cm 5cm},width=0.85\linewidth]{Processes/dadt.jpg}
+\caption{Yearly-mean thermodynamic changes (red), dynamic changes (blue) and tendency (black) of SIA. Vertical black lines represent the year of rapid September sea ice decline. These quantities are obtained from averaging over the Arctic domain presented in figure \ref{AA}.}
+\label{daidt}
+\end{figure}
+
+The thermodynamic processes affecting the sea ice volume create $4.75 \cdot1000 \, km^3/y$ in 1900 and decreases down to $0.9/ \cdot1000 \, km^3/y$ by 2100, as can be seen from figure \ref{dvidt}. It represents a loss of $80\%$ of the sea ice volume creation. The same amount of sea ice is moved out of the Arctic Ocean by dynamic processes. The thermodynamic processes create sea ice volume while the dynamic processes evacuate it. These processes affect the sea ice area in the same way.
+
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={13cm 3cm 13cm 5cm},width=0.85\linewidth]{Processes/dvdt.jpg}
+\caption{Yearly-mean thermodynamic changes (red), dynamic changes (blue) and total (black) of SIV. These quantities are obtained from averaging over the Arctic domain presented in figure \ref{AA}. Vertical black lines represent the years of rapid September sea ice decline.}
+\label{dvidt}
+\end{figure}
+
+
+Over the whole Arctic Ocean domain, thermodynamic and dynamic processes impact the SIA and SIV at almost the same ratio. The thermodynamic and dynamic processes cancel each other even when averaged over the rapid loss region of September sea ice extent. It contradicts \cite{ISI:000242942100008} who stated that dynamic processes are insignifiant compared to thermodynamic processes. Nothing particular happens at the time of the rapid sea ice decline events. The values for the thermodynamic and dynamic processes concord with \cite{Serreze2007} and \cite{Holland2010}. 
+
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{Transport out of the Arctic Ocean}\label{transport}
+
+The sea ice volume transport (SIVT) at the gates of the Arctic Ocean (figure \ref{AA}) is calculated as the integration over the gate of the the sea-ice velocity perpendicular to the gate ($u_\perp$) and the sea-ice thickness ($h$),
+\begin{equation}
+SIVT = \int_{gate} u_\perp \cdot h dx \rightarrow \sum_{gate} u_\perp \cdot h \cdot \Delta x
+\end{equation}
+It is not a standard output of the CCSM3. The best way to approximate this quantity using the standard output is to compute the monthly mean perpendicular velocity multiplied by the monthly mean sea ice thickness. The instantaneous quantities are linked to the averaged quantities though the next equation,
+\begin{equation}
+\overline{u_\perp^I \cdot h^I} = \overline{(u_\perp+ u_\perp') \cdot (h+h')} = u_\perp \cdot h + \overline{u_\perp' \cdot h'}.
+\end{equation}
+The over bar denotes monthly averaging and the high index $I$ means instantaneous. They are both equal up to $\overline{u_\perp' \cdot h'}$. Based on observations, \cite{Arfeuille} noticed that this term is negligible for the Fram Strait.  
+
+It is possible to assess the magnitude of the error of the proposed calculation using the results from the last section. The total dynamic changes of sea ice volume over the Arctic Ocean should be equal to the sum of the sea ice volume transport through all the gates of the Arctic Ocean. The error between the SIVT and the dynamic changes in sea ice volume is acceptable (figure \ref{VerifDyn}) except for simulation c over the $21^{st}$ century. 
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={7cm 3cm 7cm 5cm},width=0.85\linewidth]{Processes/VerifDyn.jpg}
+\caption{Sea ice transport out of the Arctic Ocean (blue), changes in sea ice volume caused by dynamic processes (green) and the difference between the two (red). The data represents yearly averages.}
+\label{VerifDyn}
+\end{figure}
+Excluding simulation c, the error decreases in time from $0.5 \cdot 1000 \, km^3/y$ down to $0.2 \cdot 1000 \, km^3/y$ with the dynamic changes in volume always being higher than the calculated transport out of the Arctic. At the beginning of the simulations the error represents $12\%$ while it represents $30\%$ by 2100. The presented calculation of the sea ice volume transport is not exact but the similarities between the different variables for the SIVT and the results from \cite{Arfeuille} point to an irrelevant error. 
+
+The Arctic sea-ice export through the Fram Strait is dominating all the other gates (see figure \ref{export}); $4\cdot \, 1000 \,km^3/y$ for the Fram Strait, $0.2\cdot 1000\, km^3/y$ for the Barents sea opening, $0.04\cdot  \, 1000 \,km^3/y$ for the CAA, $-0.2\cdot  \, 1000 \,km^3$ for the Bering Strait for the 1900-1910. 
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={4cm 2cm 4cm 3cm},width=0.85\linewidth]{Processes/Export2.jpg}
+\caption{Yearly-mean Fram (blue), Barents (red), CAA (yellow) and Bering (purple) ice transport out of the Arctic Ocean.}
+\label{export}
+\end{figure}
+The export through the Fram Strait decreases linearly, between $-0.007 \cdot  \, 1000 \,km^3/y^2$ and $-0.02 \cdot \, 1000 \,km^3/y^2$ through the runs, until the A1B SRES forcing starts year 2000 where it decreases exponentially until 2080 where it stabilizes at $0.7 \cdot 1000 \, km^3$. 
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{Thermodynamic}\label{TH}
+
+Thermodynamic processes include sea ice surface melt (section \ref{Smelt}), bottom melt and growth (section \ref{Bm&g}), lateral melt (section \ref{Lmelt}), and frazil sea ice formation (section \ref{frazil}). Bottom melt and basal growth are analyzed together since they share the same equations. 
+
+\subsubsection{Surface melt}\label{Smelt}
+
+This section describes the evolution of the surface melt and the surface fluxes. When the surface heat fluxes surpass the heat conducted through the ice, the extra energy is used for surface melt. It is not possible to conduct more energy than received and grow sea ice at the surface. The surface melt is calculated as:
+\begin{align}
+\Delta h &= (F_{0} - F_{ct})/q \label{eqm1}
+\end{align}
+where $F_{0}$ is the sum of all the surface fluxes, $F_{ct}$ is the heat conduction at the top of the ice, and $q$, which is negative, is the enthalpy of surface ice \citep{Hunke:2008ly}. 
+\begin{figure}[h]
+\center
+\noindent\includegraphics[trim={7cm 3cm 7cm 1cm},width=0.85\linewidth]{Processes/Melt2.jpg}
+\caption{Yearly-mean basal (blue), lateral (green) and surface (red) melt integrated over the Arctic Ocean. Vertical black lines represent the years of rapid September sea ice extent decline.}
+\label{melt}
+\end{figure}
+The surface melt increases steadily from $2.7 \cdot 1000 \, km^3/y$ in the 1900-1910 up to $4.5 \cdot 1000 \, km^3/y$ during the rapid loss events, see figure \ref{melt}. After the rapid loss events, the surface melt decreases ending at $2.4 \cdot 1000 \, km^3/y$.   The decrease in surface melt is surprising since surface fluxes strictly increase through the simulation enhancing surface melt. But, after the rapid loss of September sea ice extent, there is far less sea ice to melt. This drastic loss of sea ice has a more important impact on the total surface energy transfer than the increase in surface fluxes. It is similar to stretching an elastic. While the stretch increases, the elastic thins up until it breaks. It then relaxes to a new broken state. The Arctic sea ice is thinned by the surface fluxes until it reaches a threshold where the sea ice extent becomes seriously affected by the surface fluxes causing the rapid sea ice declines. The remaining part of this section explores the magnitude of the different surface processes. 
+
+The surface conductive heat flux, $F_{ct}$, is calculated as 
+\begin{align}
+F_{ct} &= K_h \cdot (T_{surf} - T_q),
+\end{align}
+where $K_h$ is a turbulent conduction coefficient, $T_{surf}$ is the temperature at the surface of the ice and $T_q$ is the sea ice temperature calculated from its enthalpy. Unfortunately, the standard output of the CCSM does not include the turbulent conduction coefficient nor the surface atmospheric temperature nor the sea ice temperature or its enthalpy. 
+
+The surface fluxes, $F_0$, include sensible heat flux, $F_s$, latent heat flux, $F_l$, emitted and absorbed long wave radiation, $F_{lw}$, and absorbed shortwave radiation, $F_{sw}$. The sensible heat flux is given by the temperature difference between the atmosphere and the sea ice,
+\begin{equation}
+F_s = C_s(\Theta_a-T_{surf}),
+\end{equation}
+where $C_s$ is a nonlinear turbulent heat transfer coefficient and $\Theta_a$ is the atmosphere surface potential temperature. The latent heat flux comes from a difference in humidity between the atmosphere and the sea ice. A dry surface atmosphere will force sea ice to sublimate absorbing the latent energy of sublimation from the sea ice. It is calculated as 
+\begin{equation}
+F_l = C_l (Q_a- Q_s),
+\end{equation}
+where $C_l $ is a nonlinear turbulent heat transfer coefficient, $Q_a$ is the atmosphere specific humidity at the surface and $Q_s=\frac{q_1}{\rho_a}\exp(\frac{-q_2}{T_{sf}})$ is the surface humidity of sea ice with $q_1=1.16378\,kg/m^3$, $q_2 = 5897.8\,K$ and $\rho_a$ is the surface air density. Latent and sensible heat fluxes seem inconsequential compared to radiative fluxes being under $5\,W/m^2$ of magnitude, see figure \ref{Sice}. They are comparable to the net longwave radiation or absorbed shortwave radiation though. 
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={11cm 3cm 11cm 1cm},width=0.85\linewidth]{Processes/SurfIce.jpg}
+\caption{Yearly-mean sea ice surface fluxes averaged over the Arctic Ocean: red) downwelling long wave, blue) emitted longwave, yellow) shortwave radiation reaching sea ice, purple) latent, green) sensible. Vertical lines depict the years of rapid September sea ice extent decline.}
+\label{Sice}
+\end{figure}
+
+The emitted longwave radiation, $F_{lw\,e}$, is given by the Stefan-Boltzmann law,
+\begin{equation}
+F_{lw\,e} = \epsilon F_{lw\,a} - \epsilon\sigma_{SB}T_{sf}^4,
+\end{equation}
+where $\epsilon$ is the emissivity of sea ice, $F_{lw\,a}$ is the longwave atmospheric radiation reaching sea ice and $\sigma_{SB}$ is the Stefan-Boltzmann constant. The long wave radiation reaching sea ice starts at $225\,W/m^2$ between 1900 and 1910. It then increases slowly at a pace of $0.1\,W/m^2/y$ until 2000 where it increases at $0.4\,W/m^2/y$ until 2080. It then stabilizes at $269\,W/m^2$. The SRES A1B predicts an augmentation of green house gases which is included in the CCSM3. Green house gases take a part of the solar radiation and reemit it as long wave radiation. They also absorb some of the longwave radiation that would exit our atmosphere and reemit it downward as longwave radiation. An increase in green house gases causes an increase in downward longwave radiation. The emitted long wave radiation starts at $250\,W/m^2$ increasing at $0.1\,W/m^2/y$ until 2000 where it increases at $0.3\,W/m^2/y$ until 2080 where it stabilizes at $290\,W/m^2$. The increase is due to an increased sea ice surface temperature. The resulting long wave radiation is stable over the $19^{th}$ century at $-25\,W/m^2$ meaning there is more energy emitted than received. From 2000 to 2080, the magnitude of the difference between long wave absorption and emission decreases at a rate of $0.06\,W/m^2/y$ stabilizing after 2080 at $-20\,W/m^2$. 
+
+When the solar radiation reaches the sea ice, most of it is reflected at the surface. The remaining solar radiation is partly absorbed by the sea ice, a part of it is conducted through the sea ice to the ocean. The amount of reflected radiation is given by the albedo or reflectivity, $\alpha$ of sea ice. The fraction of radiation conducted through sea ice is given by the variable $i_0$. The absorbed shortwave radiation is given by
+ \begin{equation}
+F_{sw\,abs} = (1-\alpha)(1-i_0)F_{sw},
+\end{equation}
+where $F_{sw}$ is the atmospheric shortwave radiation reaching sea ice. The shortwave radiation reaching sea ice starts at $82\,W/m^2$ in 1900 and end at $65\,W/m^2$ by 2100. It constantly loses magnitude to the green house gases transforming it in long wave radiation. The absorbed shortwave radiation by sea ice starts at $26\,W/m^2$ and increases up to $28\,W/m^2$ by the time of the rapid loss. It then decreases to $26.7\,W/m^2$ by the end of the simulations. Since the shortwave radiation reaching sea ice decreases, it may seem surprising to observe an increasing absorbed shortwave but it can be explained. The level of absorption is managed by the albedo and the amount of radiation going through the sea ice to the ocean. The albedo of the Arctic sea ice has a value of $0.7$ in 1900 and decreases slowly through the $20^{th}$ century. Over the $21^{st}$ century, the average Arctic albedo decreases rapidly reaching $.55$ by 2100. The amount of radiative energy going through sea ice starts at $1\,W/m^2$ in 1900 up to $2.4$ by 2100. It increases slowly between 1900 and 2000 and increases rapidly between 2000 and 2100. This increase is the result of the thinning of sea ice making it easier for shortwave radiation to go through sea ice. Even with an increased amount of energy going through the sea ice, the lowered albedo allows for more radiation to be absorbed even with a less vigorous shortwave radiation reaching sea ice. 
+
+The total sea ice surface heat flux starts at $-5\,W/m^2$ in 1900 and increases linearly at a rate of $0.02\,W/m^2/y$ for 100 years reaching $-3\,W/m^2$ in 2000. It then increases linearly at $0.065\,W/m^2/y$ between 2000 and 2100 ending at $3.5\,W/m^2$. During the $20^{th}$ century, the longwave and shortwave radiation cancel each other leaving only the latent and sensible fluxes, $-4\,W/m^2$ and $-1\,W/m^2$ respectively. During the $21^{st}$ century, the shortwave radiation surpasses the longwave radiation and adds to the latent and sensible heat fluxes. Averaged yearly, the surface fluxes have a cooling effect on the sea ice before the rapid declines and a warming effect after. 
+
+\subsubsection{Basal melt and growth}\label{Bm&g}
+
+Bottom melting and basal growth are driven by the ocean. They are calculated as:
+\begin{align}
+\Delta h &= \frac{F_{cb} - F_{bot}}{q},
+\end{align}
+where $F_{cb}$ is the heat conduction at the bottom of the ice and $F_{bot}$ is the heat flux from the ocean to the ice. If the ocean transfers more heat than what the sea ice can conduct, the extra energy melts sea ice. Basal growth occurs when the sea ice is cooled by the cold atmosphere sucking energy from the ocean through conduction. When the surface ocean reaches the freezing temperature of $-1.8\,^\circ C$ for saline water in the CCSM, the latent heat of solidification is conducted upwards and sea ice is formed. 
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={7cm 3cm 7cm 1cm},width=0.85\linewidth]{Processes/Growth2.jpg}
+\caption{Yearly-mean frazil ice formation (blue) and basal ice growth (green) integrated over the Arctic Ocean. Vertical black lines represent the years of rapid September sea ice extent decline.}
+\label{growth}
+\end{figure}
+The basal melt increases nonlinearly from $3.9 \cdot 1000 \, km^3/y$ during the 1900-1910 up to $6.7 \cdot 1000 \, km^3/y$ during the rapid loss events followed by a decrease ending at $4.8 \cdot 1000 \, km^3/y$, see figure \ref{melt}. During the whole simulation, bottom fluxes strictly increase, thus enhancing basal melt. After the rapid loss of September sea ice extent, the basal melt decreases because there is far less sea ice to melt. The basal ice growth is stable at $10.1 \cdot 1000 \, km^3/y$ until the rapid sea ice decline events and decreases briskly at $-0.045 \cdot 1000 \, km^3/y^2$ until 2080 where it stabilizes at $6.8 \cdot 1000 \, km^3/y$, see figure \ref{growth}. The loss of sea ice does not come from a lack of sea ice formation since it is mostly stable. The rapid losses of sea ice are caused by increased melt. The components of the basal fluxes are studied in the rest of this section. 
+
+The heat flux from the ocean to the sea ice is calculated as:
+\begin{align}
+F_{bot} = - \rho_w \cdot c_w \cdot c_h \cdot u_* \cdot (T_w - T_{fr}),
+\end{align}
+where $\rho_w$ is the water density, $c_w$ is the water heat capacity, $c_h$ is the heat exchange coefficient, $u_* = \sqrt{|\tau_w|/\rho_w}$ is the friction velocity, $|\tau_w|$ is the norm of the shear stress given by $\mu_w \sqrt{\frac{\partial u}{\partial y}^2+\frac{\partial v}{\partial x}^2}$ with $\mu_w$ being the ocean dynamical viscosity, $T_w$ is the water temperature, $T_{fr}$ is the freezing temperature of the ocean set at $-1.8^\circ C$ in the CCSM. The heat flux from the ocean to the sea ice starts at $-34\,W/m^2$ and increases in strength at a pace of $0.09\,W/m^2/y$ reaching $-43\,W/m^2$ by the year 2000, see figure \ref{foi}. 
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={5cm 1cm 5cm 1cm},width=0.85\linewidth]{Processes/BotIce.jpg}
+\caption{Yearly-mean turbulent heat flux between the sea ice and ocean averaged over the Arctic Ocean. A negative value represents a loss of heat from the ocean to the sea ice. Vertical black lines represent the years of rapid September sea ice extent decline.}
+\label{foi}
+\end{figure}
+The negative sign of the flux represents a loss of heat from the ocean to the ice. From 2000 to 2080, the heat exchange between the ocean and the sea ice increases rapidly at a rate of $0.9\,W/m^2/y$ stabilizing at $117\,W/m^2$ by 2080. 
+% Compare F_bot with measurements. 
+
+
+
+The turbulent heat flux between the sea ice and the ocean is driven by the friction velocity and the sea surface temperature. The sea surface temperature increases exponentially and the rapid sea ice declines happen at $-0.9^\circ C$ (figure \ref{SSTg1}). 
+\begin{figure}[t!]
+\center
+\noindent\includegraphics[trim={7cm 1cm 7cm 1cm},width=0.85\linewidth]{Processes/SST.jpg}
+\caption{Yearly-mean sea surface temperature averaged over the Arctic Ocean in $^\circ C$. Vertical black lines represent the years of rapid September sea ice extent decline.}
+\label{SSTg1}
+\end{figure}
+Over the full simulation, the maximum sea surface temperature increases is of  $8^\circ C$ and is located over the Barents Sea. Disappointingly, the sea surface temperature data of simulation a is missing. The friction velocity increases until the rapid sea ice decline where it starts decreasing. Averaged over the simulations, the friction velocity starts at $0.129\,m/s$ by the year 1900 and increases up to $0.131\,m/s$ during the years of abrupt ice loss and then decreases down to $0.130\,m/s$. The variability of the friction velocity is on average $0.019\,m/s$ and peaking at $0.04$. It is more significant than its trend which culminates at $0.012\,m/s$ causing an obfuscated signal. At the moment of the rapid sea ice decline, the friction velocity is not at a maximum or at an unusually high value. Therefore, the friction velocity is not impactful in terms of rapid sea ice decline. Unfortunately, the standard output of the CCSM does not include the bottom conduction or its components.  
+
+
+
+
+
+%\begin{figure}
+%\center
+%\noindent\includegraphics[width=0.85\linewidth]{Processes/Ustar.jpg}
+%\caption{Yearly-mean ocean friction velocity, $U_*$, averaged over the Arctic Ocean. Vertical black lines represent the years of rapid September sea ice extent decline.}
+%\label{ustar}
+%\end{figure}
+
+
+
+
+\subsubsection{Lateral melt}\label{Lmelt}
+
+Lateral melting is calculated as 
+\begin{align}
+F_{side} &= r_{side} \cdot E_{tot}, \label{eqml1}\\
+r_{side} &= \frac{m_1 \cdot (T_w - T_{bot})^{m_2} \cdot \pi}{\alpha \cdot f_D},\label{eqml2}
+\end{align}
+where $E_{tot}$ is the total energy available to melt ice and snow, $m_1 = 1.6\cdot 10^{-6}$ and $m_2 = 1.36$ are coming from \cite{MaykutPero1987}, $\alpha = 0.66$ from \cite{Steele1992}, $f_D$ is the flow diametre set at $300 \, m$. The lateral melting decreases slightly during the full duration of the simulation at  $-0.4 \cdot km^3/y^2$ starting at $0.8 \cdot 1000 \, km^3/y$ in the 1900-1910. 
+
+Lateral melt is less important than surface and bottom melt and is fairly constant through the simulations.  Thereby, it could not have caused the rapid sea ice declines and the analysis of this process is not pursued. 
+
+
+
+\subsubsection{Frazil}\label{frazil}
+
+Frazil ice develops as supercooled ocean droplets form small crystals of ice in the mixed layer and, due to their buoyancy, reach the surface of the ocean. The production rate of frazil ice is calculated as:
+\begin{equation}\label{eqfraz}
+G_{frazil} = \frac{(T_{fr} - T_w)\cdot c_w \cdot \rho_w \cdot h_{mix}}{q_0} 
+\end{equation}
+where $h_{mix}$ is the thickness of the ocean mixed layer, $q_0$ is the enthalpy of newly formed ice. Frazil is always less important than basal ice growth. Frazil ice formation is constant through the simulations averaging at $2.1 \cdot 1000 \, km^3/y$.
+
+Frazil ice formation is less important than basal growth and is fairly constant through the simulations.  Hence, it could not have caused the rapid sea ice declines and the analysis of this process will not be pursued. 
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{Discussion}\label{conc1}
+
+I based my analyses of the abrupt loss of Arctic September sea ice extent on sea ice volume. In the CCSM3, sea ice volume decreases sooner and faster than the sea ice extent, respectively a loss of $40\%$ and $8\%$ between 1950 and 2000. During the years of the abrupt reductions of Arctic September sea ice extent, the sea ice volume decreases rapidly but not in a surprising way. The sea ice volume loss during the years of abrupt loss has been observed at earlier periods. The Arctic sea ice thinned until it reached a threshold where it could not thin much anymore and then started to lose coverage rapidly, hence the rapid loss of September sea ice extent. 
+
+The CCSM3 outputs the amount of sea ice area and volume changes from dynamic and thermodynamic processes separately. Using these variables, dynamic and thermodynamic processes are equal in weight for both sea ice area and sea ice volume. Over the short period of rapid loss of September sea ice extent, both dynamic and thermodynamic processes are almost equal with dynamic processes slightly increasing suggesting a modestly more important contribution from dynamic processes than thermodynamic processes. These results differs from \cite{ISI:000242942100008} who stated that dynamic processes played little role in the abrupt loss of September sea ice extent. 
+
+Sea ice transport out of the Arctic Ocean mainly happens through the Fram Strait while the transport through the Barents sea opening, the Canadian Arctic Archipelago and the Bering Strait are negligible in comparisons. Table \ref{snapshot} describes the relative strength of the different processes during the early $20^{th}$ century before the rapid declines, at the time of the rapid declines, and by the end of the $21^{st}$ century after the rapid declines. 
+\begin{table}[H]
+\centering
+\begin{tabular}{l | >{\centering\arraybackslash}p{2cm} | >{\centering\arraybackslash}p{2cm} | >{\centering\arraybackslash}p{2cm} |}
+Processes & 1900-1909 & Events & 2090-2099\\
+\hline
+Surface melt & -3 & -3.5 & -2\\
+Bottom melt & -4 & -6 & -5\\
+Lateral melt & -1 & -1 & -1\\
+Basal growth & 10 & 10 & 6\\
+Frazil formation & 2 & 2 & 2\\
+\hline
+Total Melt  & -8 &- 9.5 & -8\\
+Total formation & 12 & 12 & 8\\
+Thermodynamic & 4 & 2.5 & 0\\
+Transport & -4 & -2 & -1
+\end{tabular}
+\caption{Sea ice volume changes due to melt and formation at three different periods: 1900-1909, at the abrupt loss events and 2090-2099. All volume changes are in $1000\,km^2/y$.}
+\label{snapshot}
+\end{table}
+
+
+%At the beginning of the simulations, the transport through the Fram strait is of $4\cdot 1000\,km^3/y$, the surface melt is of $3\cdot 1000\,km^3/y$, the bottom melt is of $4\cdot 1000\,km^3/y$, the lateral melt is slightly under a $1000\,km^3/y$, the basal growth is of $10\cdot 1000\,km^3/y$ and the frazil growth is of $2\cdot 1000\,km^3/y$. The total melt amount for $8\cdot 1000\,km^3/y$. The total formation amounts for $12\cdot 1000\,km^3/y$. The total thermodynamic processes create $4\cdot 1000\,km^3/y$ and the same amount is moved out of the Arctic Ocean. 
+
+
+%At the time of the rapid sea ice decline, the transport through the Fram strait is around $2\cdot 1000\,km^3/y$, the surface melt is of $3.5\cdot 1000\,km^3/y$, the bottom melt is of $6\cdot 1000\,km^3/y$, the lateral melt is slightly under a $1000\,km^3/y$, the basal growth is of $10\cdot 1000\,km^3/y$ and the frazil growth is of $2\cdot 1000\,km^3/y$. The total melt amount for $9.5\cdot 1000\,km^3/y$. The total formation amounts for $12\cdot 1000\,km^3/y$. The total thermodynamic processes create $2.5\cdot 1000\,km^3/y$ which is almost completely transported out of the Arctic Ocean through the Fram Strait. 
+
+
+%By the end of the $21^{st}$ century, the transport through the Fram strait is slightly under $1000\,km^3/y$, the surface melt is of $2\cdot 1000\,km^3/y$, the bottom melt is of $5\cdot 1000\,km^3/y$, the lateral melt is still slightly under a $1000\,km^3/y$, the basal growth is of $6\cdot 1000\,km^3/y$ and the frazil growth is still of $2\cdot 1000\,km^3/y$. The total melt still amount for $8\cdot 1000\,km^3/y$. The total formation amounts for $8\cdot 1000\,km^3/y$. The total thermodynamic processes balances itself while a modest amount of ice is expelled from the Arctic Ocean. 
+
+Rapid loss events are caused by increased melt.  Until the rapid loss of September sea ice extent events, melt increases, formation stagnates and transport decreases leaving only the melt to cause major modification of the sea ice. The surface melt is driven by surface fluxes. The sum of all the surface fluxes is of $-5\,W/m^2$ in 1900 and increases up to $3.5\,W/m^2$ by 2100, a $8.5\,W/m^2$ gain over 200 years. It went from cooling the sea ice to warming it. The bottom melt is driven by the turbulent heat flux from the sea ice to the ocean. It starts at $-20\,W/m^2$ in 1900 and ends at $-120\,W/m^2$ in 2100. The ocean heat transfer increased by $80\,W/m^2$ over 200 years. This massive increase of ocean heat transferred to sea ice is intriguing and it will be addressed in chapter \ref{vert}. The heat exchanges between the ocean and sea ice are driven by the friction velocity and the sea surface temperature. While the friction velocity increases mildly the sea surface temperature increases considerably. Therefore, the sea surface temperature governs the turbulent heat flux between the ocean and the sea ice. It can be observed from the similarities between the sea surface temperature and the turbulent heat flux curves; they are alike up to a minus sign.
+
+Since the ocean fluxes contributed more to the sea ice melt than the surface fluxes and has undergone more significant changes, it must be the primal energy source causing sea ice decrease. At this point, not a single process can solely explain the rapid loss of sea ice extent. I still agree with the conclusion of \cite{ISI:000242942100008} which stated that the rapid loss of September sea ice extent is caused by years of high annual variability in conjunction with thinner sea ice. 
+
+
+The next chapter of this thesis aims at understanding the incredible increase of ocean heat transferred to the sea ice. Sea surface temperature is the main contributor to this heat exchange. The energy sources affecting the sea surface temperature will be investigated through the energy budget of the ocean part of the CCSM, the POP model.
+
+
+
+
+
+
+
+
+
